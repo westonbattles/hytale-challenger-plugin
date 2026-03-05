@@ -1,22 +1,25 @@
 {
-    "Group": "Example",
-    "Name": "ExamplePlugin",
+    "Group": "Challenger",
+    "Name": "ChallengerPlugin",
     "Version": "0.0.2",
-    "Description": "An example plugin for HyTale!",
+    "Description": "",
     "Authors": [
         {
-            "Name": "It's you!"
+            "Name": "Weston Battles"
+        },
+        {
+            "Name": "Iron"
         }
     ],
-    "Website": "example.org",
+    "Website": "",
     "ServerVersion": "*",
     "Dependencies": {
-        
+
     },
     "OptionalDependencies": {
-        
+
     },
     "DisabledByDefault": false,
-    "Main": "org.example.plugin.ExamplePlugin",
+    "Main": "com.westonbattles.challenger.ChallengerPlugin",
     "IncludesAssetPack": true
 }
