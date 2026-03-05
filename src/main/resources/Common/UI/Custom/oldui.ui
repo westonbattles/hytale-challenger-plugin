@@ -1,0 +1,27 @@
+@ReadyLabel = LabelStyle(FontSize: 28, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+@MyTex = PatchStyle(TexturePath: "MyBackground.png");
+
+Group {
+    LayoutMode: Center;
+
+    Group {
+        Background: @MyTex;
+      Anchor: (Width: 840, Height: 400);
+      Group {
+        Anchor: (Top: 120, Left: 140, Width: 220, Height: 130);
+
+        TextButton #TextButton {
+          Anchor: (Top: 20, Left: 0, Width: 220, Height: 90);
+          Text: "READY";
+          Style: (
+            Default: (LabelStyle: @ReadyLabel, Background: (Color: #ad3434)),
+            Hovered: (LabelStyle: @ReadyLabel, Background: (Color: #c44040)),
+            Pressed: (LabelStyle: @ReadyLabel, Background: (Color: #8a2a2a))
+          );
+        }
+      }
+    Group {
+        Anchor: (Top: 120, Left: 450, Width: 250, Height: 140);
+    }
+    }
+}

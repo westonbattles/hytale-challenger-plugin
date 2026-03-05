@@ -1,0 +1,52 @@
+$Common = "Common.ui";
+
+@ReadyLabel = (FontSize: 40, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+@ButtonLabel = (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+
+@MyTex = PatchStyle(TexturePath: "MyBackground.png");
+
+Group {
+  LayoutMode: Center;
+  Anchor: (Width: 700, Height: 360);
+  Background: @MyTex;
+  Group {
+    Anchor: (Left: 120, Width: 10, Height: 10);
+    LayoutMode: Center;
+    Label {
+      Anchor: (Left: 70, Width: 320, Height: 80);
+      Text: "Boss Select:";
+      Style: @ReadyLabel;
+    }
+  }
+
+  Group #ButtonGroup {
+    Anchor: (Top: 0, Left: 150, Width: 350, Height: 360);
+    TextButton {
+      Anchor: (Top: 70, Left: 55, Width: 240, Height: 64);
+      Text: "Player 1";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
+        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
+        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+      );
+    }
+    TextButton {
+      Anchor: (Top: 150, Left: 55, Width: 240, Height: 64);
+      Text: "Player 2";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
+        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
+        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+      );
+    }
+    TextButton {
+      Anchor: (Top: 230, Left: 55, Width: 240, Height: 64);
+      Text: "Random";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
+        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
+        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+      );
+    }
+  }
+}

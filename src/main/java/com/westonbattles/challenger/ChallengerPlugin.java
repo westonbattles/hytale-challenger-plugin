@@ -1,8 +1,12 @@
 package com.westonbattles.challenger;
 
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.westonbattles.challenger.commands.HideStartUICommand;
+import com.westonbattles.challenger.commands.ShowStartUICommand;
+import com.westonbattles.challenger.events.OpenGuiListener;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +26,9 @@ public class ChallengerPlugin extends JavaPlugin {
     @Override
     protected void setup() {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
-        this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
+        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OpenGuiListener::openGui);
+
+        this.getCommandRegistry().registerCommand(new ShowStartUICommand("show", ""));
+        this.getCommandRegistry().registerCommand(new HideStartUICommand("hide", ""));
     }
 }
