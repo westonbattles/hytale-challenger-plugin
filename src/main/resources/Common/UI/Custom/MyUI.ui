@@ -1,14 +1,17 @@
 $Common = "Common.ui";
 
 @ReadyLabel = (FontSize: 40, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
-@ButtonLabel = (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+@ButtonLabel = (FontSize: 16, TextColor: #bdcbd3, RenderBold: true, RenderUppercase: true, HorizontalAlignment: Center, VerticalAlignment: Center, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 12);
 
-@MyTex = PatchStyle(TexturePath: "MyBackground.png");
+@Background = PatchStyle(TexturePath: "BossSelectBackground.png");
+@BossSelectDefaultButtonBackground = PatchStyle(TexturePath: "BossSelect.png");
+@BossSelectHoveredButtonBackground = PatchStyle(TexturePath: "BossSelect_Hovered.png");
+@BossSelectPressedButtonBackground = PatchStyle(TexturePath: "BossSelect_Pressed.png");
 
 Group {
   LayoutMode: Center;
   Anchor: (Width: 700, Height: 360);
-  Background: @MyTex;
+  Background: @Background;
   Group {
     Anchor: (Left: 120, Width: 10, Height: 10);
     LayoutMode: Center;
@@ -25,27 +28,27 @@ Group {
       Anchor: (Top: 70, Left: 55, Width: 240, Height: 64);
       Text: "Player 1";
       Style: (
-        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
-        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
-        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
       );
     }
     TextButton {
       Anchor: (Top: 150, Left: 55, Width: 240, Height: 64);
       Text: "Player 2";
       Style: (
-        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
-        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
-        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
       );
     }
     TextButton {
       Anchor: (Top: 230, Left: 55, Width: 240, Height: 64);
       Text: "Random";
       Style: (
-        Default: (LabelStyle: @ButtonLabel, Background: (Color: #ad3434)),
-        Hovered: (LabelStyle: @ButtonLabel, Background: (Color: #c44040)),
-        Pressed: (LabelStyle: @ButtonLabel, Background: (Color: #8a2a2a))
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
       );
     }
   }
