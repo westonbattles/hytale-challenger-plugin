@@ -31,24 +31,24 @@ public class GameManager {
 		}
 
 		// Add playerComponent to player
-		PlayerComponent playerComponent = store.getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
-
-		boolean componentAlreadyOnPlayer = (playerComponent != null);
-
-		// If component already exists, maybe we should reset it?
-		if (componentAlreadyOnPlayer) {
-			playerComponent.setRole(PlayerRole.Unassigned);
-		} else {
-			playerComponent = new PlayerComponent();
-			store.putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
-		}
+		PlayerComponent playerComponent = new PlayerComponent();
+		// putComponent appears to automatically replace the component if the entity already has it
+		store.putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
 
 		// Add player to player list
 		players.add(playerRef);
-
 	}
 
 	public void removePlayer(@Nonnull PlayerRef playerRef) {
+
+		// Make sure the player we are trying to remove is actually in the list of players
+		if (!players.contains(playerRef)) {
+			ChallengerPlugin.LOGGER.atWarning().log("Failed removing " + playerRef.getUsername() +" from player list as they are not in the list.");
+			return;
+		}
+
+		// Remove the player component of the player
+
 		players.remove(playerRef);
 	}
 
