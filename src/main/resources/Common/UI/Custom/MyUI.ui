@@ -24,7 +24,7 @@ Group {
 
   Group #ButtonGroup {
     Anchor: (Top: 0, Left: 150, Width: 350, Height: 360);
-    TextButton {
+    TextButton #Player1BossSelectButton {
       Anchor: (Top: 70, Left: 55, Width: 240, Height: 64);
       Text: "Player 1";
       Style: (
@@ -33,7 +33,7 @@ Group {
         Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
       );
     }
-    TextButton {
+    TextButton #Player2BossSelectButton{
       Anchor: (Top: 150, Left: 55, Width: 240, Height: 64);
       Text: "Player 2";
       Style: (
@@ -42,7 +42,7 @@ Group {
         Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
       );
     }
-    TextButton {
+    TextButton #RandomBossSelectButton{
       Anchor: (Top: 230, Left: 55, Width: 240, Height: 64);
       Text: "Random";
       Style: (

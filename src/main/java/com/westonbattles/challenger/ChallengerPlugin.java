@@ -28,7 +28,7 @@ public class ChallengerPlugin extends JavaPlugin {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OpenGuiListener::openGui);
 
-        this.getCommandRegistry().registerCommand(new ShowStartUICommand("show", ""));
-        this.getCommandRegistry().registerCommand(new HideStartUICommand("hide", ""));
+        this.getCommandRegistry().registerCommand(new ShowStartUICommand("showbossui", ""));
+        this.getCommandRegistry().registerCommand(new HideStartUICommand("hidebossui", ""));
     }
 }
