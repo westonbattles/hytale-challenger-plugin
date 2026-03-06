@@ -1,0 +1,55 @@
+$Common = "Common.ui";
+
+@ReadyLabel = (FontSize: 40, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+@ButtonLabel = (FontSize: 16, TextColor: #bdcbd3, RenderBold: true, RenderUppercase: true, HorizontalAlignment: Center, VerticalAlignment: Center, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 12);
+
+@Background = PatchStyle(TexturePath: "BossSelectBackground.png");
+@BossSelectDefaultButtonBackground = PatchStyle(TexturePath: "BossSelect.png");
+@BossSelectHoveredButtonBackground = PatchStyle(TexturePath: "BossSelect_Hovered.png");
+@BossSelectPressedButtonBackground = PatchStyle(TexturePath: "BossSelect_Pressed.png");
+
+Group {
+  LayoutMode: Center;
+  Anchor: (Width: 700, Height: 360);
+  Background: @Background;
+  Group {
+    Anchor: (Left: 120, Width: 10, Height: 10);
+    LayoutMode: Center;
+    Label {
+      Anchor: (Left: 70, Width: 320, Height: 80);
+      Text: "Boss Select:";
+      Style: @ReadyLabel;
+    }
+  }
+
+  Group #ButtonGroup {
+    Anchor: (Top: 0, Left: 150, Width: 350, Height: 360);
+    TextButton #Player1BossSelectButton {
+      Anchor: (Top: 70, Left: 55, Width: 240, Height: 64);
+      Text: "Player 1";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
+      );
+    }
+    TextButton #Player2BossSelectButton{
+      Anchor: (Top: 150, Left: 55, Width: 240, Height: 64);
+      Text: "Player 2";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
+      );
+    }
+    TextButton #RandomBossSelectButton{
+      Anchor: (Top: 230, Left: 55, Width: 240, Height: 64);
+      Text: "Random";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
+      );
+    }
+  }
+}
