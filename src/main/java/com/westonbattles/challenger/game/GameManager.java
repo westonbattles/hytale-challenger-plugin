@@ -1,34 +1,81 @@
 package com.westonbattles.challenger.game;
 
-import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.westonbattles.challenger.ChallengerPlugin;
+import com.westonbattles.challenger.components.PlayerComponent;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.HashMap;
 
 public class GameManager {
 
 	public GameState state = GameState.Waiting;
-	private List<PlayerRef> players = new ArrayList<>();
+	private final List<PlayerRef> players = new ArrayList<>();
+	Store<EntityStore> store = GameManager.getWorld().getEntityStore().getStore();
 
-	public void addPlayer(PlayerRef player) {
+	public void addPlayer(@Nonnull PlayerRef player) {
 		players.add(player);
 	}
 
-	public void removePlayer(PlayerRef player) {
+	public void removePlayer(@Nonnull PlayerRef player) {
 		players.remove(player);
 	}
 
-	public boolean isReady(){
+	public static TransformComponent getTestComponent(PlayerRef playerRef){
+		Ref<EntityStore> ref = playerRef.getReference();
+		if (ref == null) return null;
+		return GameManager.getWorld().getEntityStore().getStore().getComponent(ref, TransformComponent.getComponentType());
+	}
+
+	/**
+	 * Loop through all players and check if they are ready
+	 *
+	 * Readiness is determined based on their playerComponent isReady variable. Returns true if 0 players are playing
+	 */
+	public boolean playersReady(){
 		// TODO: loop through players and check if they are ready based on their game component ready variable
-		return false;
+
+		for (PlayerRef playerRef : players) {
+			// Get reference to the player reference (lmao)
+			Ref<EntityStore> ref = playerRef.getReference();
+			// If the reference is null we just remove the player from the list of players idk what would cause this to happen but oh well
+			if (ref == null) {
+				ChallengerPlugin.LOGGER.atSevere().log("Failed to get ref for " + playerRef.getUsername() +", removing them from player list...");
+				players.remove(playerRef);
+				continue;
+			}
+
+			// Get the playerComponent of the player (and do similar null checking)
+			PlayerComponent playerComponent = store.getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
+			if (playerComponent == null) {
+				ChallengerPlugin.LOGGER.atSevere().log("Could not get PlayerComponent for " + playerRef.getUsername() +", removing them from player list...");
+				players.remove(playerRef);
+				continue;
+			}
+
+			// We return false unless every player is ready
+			if (!playerComponent.isReady()) return false;
+		}
+
+		return true;
 	}
 
 	// Transition methods
 	public void startGame(){
 		state = GameState.Countdown;
+	}
+
+	// Gets a reference to the world the minigame is running in
+	public static World getWorld(){
+		return Universe.get().getDefaultWorld();
 	}
 
 }
