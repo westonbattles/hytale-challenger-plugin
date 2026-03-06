@@ -1,4 +1,8 @@
 package com.westonbattles.challenger.game;
 
-public class GameState {
+public enum GameState {
+	Waiting,
+	Countdown,
+	Active,
+	Concluded
 }
