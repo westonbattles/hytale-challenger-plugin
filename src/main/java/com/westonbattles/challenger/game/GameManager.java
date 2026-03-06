@@ -69,8 +69,13 @@ public class GameManager {
 	}
 
 	// Transition methods
+
 	public void startGame(){
 		state = GameState.Countdown;
+	}
+
+	public void EndGame(){
+		state = GameState.Concluded;
 	}
 
 	// Gets a reference to the world the minigame is running in
