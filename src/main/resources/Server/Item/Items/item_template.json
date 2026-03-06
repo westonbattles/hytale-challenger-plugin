@@ -1,0 +1,24 @@
+{
+  "TranslationProperties": {
+    "Name": "Item Template",
+    "Description": "Item Template Description"
+  },
+  "Id": "Item_Template",
+  "Icon": "Icons/ItemsGenerated/item_template.png",
+  "Model": "Items/item_template/model.blockymodel",
+  "Texture": "Items/item_template/model_texture.png",
+  "Quality": "Common",
+  "MaxStack": 1,
+  "Categories": [
+    "Items.Example"
+  ],
+  "Interactions": {
+    "Secondary": {
+      "Interactions": [
+        {
+          "Type": "template_interaction"
+        }
+      ]
+    }
+  }
+}
