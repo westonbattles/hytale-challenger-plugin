@@ -22,8 +22,8 @@ public class PlayerComponent implements Component<EntityStore> {
         return new PlayerComponent();
     }
 
-    public boolean isReady() {return isReady; }
-    public void toggleReady() {isReady = !isReady;}
+    public boolean isReady() { return isReady; }
+    public void toggleReady() { isReady = !isReady; }
 
     public PlayerRole getRole() { return this.role; }
     public void setRole(PlayerRole role) { this.role = role; }
