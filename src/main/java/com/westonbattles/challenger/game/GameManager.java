@@ -3,21 +3,22 @@ package com.westonbattles.challenger.game;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.HashMap;
 
 public class GameManager {
 
 	public GameState state = GameState.Waiting;
-	private HashMap<UUID, PlayerRef> players;
+	private List<PlayerRef> players = new ArrayList<>();
 
 	public void addPlayer(PlayerRef player) {
-		players.put(player.getUuid(), player);
+		players.add(player);
 	}
 
 	public void removePlayer(PlayerRef player) {
-		players.remove(player.getUuid());
+		players.remove(player);
 	}
 
 	public boolean isReady(){
