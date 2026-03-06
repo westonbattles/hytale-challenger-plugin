@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.westonbattles.challenger.commands.HideBossUICommand;
 import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.events.OpenGuiListener;
+import com.westonbattles.challenger.events.TestEvent;
 
 import javax.annotation.Nonnull;
 
@@ -26,8 +27,10 @@ public class ChallengerPlugin extends JavaPlugin {
     @Override
     protected void setup() {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
+        //Events
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OpenGuiListener::openGui);
-
+        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, TestEvent::onPlayerReady);
+        //Commands
         this.getCommandRegistry().registerCommand(new ShowBossUICommand("showbossui", ""));
         this.getCommandRegistry().registerCommand(new HideBossUICommand("hidebossui", ""));
     }
