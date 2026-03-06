@@ -21,12 +21,35 @@ public class GameManager {
 	private final List<PlayerRef> players = new ArrayList<>();
 	Store<EntityStore> store = GameManager.getWorld().getEntityStore().getStore();
 
-	public void addPlayer(@Nonnull PlayerRef player) {
-		players.add(player);
+	public void addPlayer(@Nonnull PlayerRef playerRef) {
+
+		Ref<EntityStore> ref = playerRef.getReference();
+		if (ref == null) {
+			ChallengerPlugin.LOGGER.atSevere().log("Failed adding " + playerRef.getUsername() +" to player list: playerRef.getReference() was null.");
+			players.remove(playerRef);
+			return;
+		}
+
+		// Add playerComponent to player
+		PlayerComponent playerComponent = store.getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
+
+		boolean componentAlreadyOnPlayer = (playerComponent != null);
+
+		// If component already exists, maybe we should reset it?
+		if (componentAlreadyOnPlayer) {
+			playerComponent.setRole(PlayerRole.Unassigned);
+		} else {
+			playerComponent = new PlayerComponent();
+			store.putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
+		}
+
+		// Add player to player list
+		players.add(playerRef);
+
 	}
 
-	public void removePlayer(@Nonnull PlayerRef player) {
-		players.remove(player);
+	public void removePlayer(@Nonnull PlayerRef playerRef) {
+		players.remove(playerRef);
 	}
 
 
