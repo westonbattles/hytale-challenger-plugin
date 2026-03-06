@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.westonbattles.challenger.ui.MyUI;
+import com.westonbattles.challenger.ui.BossSelectUI;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +27,7 @@ public class ShowStartUICommand extends AbstractPlayerCommand {
         Player player = ctx.senderAs(Player.class);
 
         CompletableFuture.runAsync(() -> {
-            player.getPageManager().openCustomPage(ref, store, new MyUI(playerRef, CustomPageLifetime.CanDismiss));
+            player.getPageManager().openCustomPage(ref, store, new BossSelectUI(playerRef, CustomPageLifetime.CanDismiss));
             playerRef.sendMessage(Message.raw("UI Page Shown"));
         }, world);
 

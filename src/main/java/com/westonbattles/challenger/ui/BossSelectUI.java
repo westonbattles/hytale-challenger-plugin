@@ -19,19 +19,19 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class MyUI extends InteractiveCustomUIPage<MyUI.Data> {
+public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
 
     private static final String P1_SELECT_BUTTON_ID = "Player1BossSelectButton";
     private static final String P2_SELECT_BUTTON_ID = "Player2BossSelectButton";
     private static final String RANDOM_PLAYER_SELECT_BUTTON_ID = "RandomBossSelectButton";
 
-    public MyUI(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime) {
+    public BossSelectUI(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime) {
         super(playerRef, lifetime, Data.CODEC);
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        uiCommandBuilder.append("MyUI.ui");
+        uiCommandBuilder.append("BossSelect.ui");
 
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P1_SELECT_BUTTON_ID, EventData.of("ClickedButton", P1_SELECT_BUTTON_ID), false);
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P2_SELECT_BUTTON_ID, EventData.of("ClickedButton", P2_SELECT_BUTTON_ID), false);
