@@ -29,11 +29,6 @@ public class GameManager {
 		players.remove(player);
 	}
 
-	public static TransformComponent getTestComponent(PlayerRef playerRef){
-		Ref<EntityStore> ref = playerRef.getReference();
-		if (ref == null) return null;
-		return GameManager.getWorld().getEntityStore().getStore().getComponent(ref, TransformComponent.getComponentType());
-	}
 
 	/**
 	 * Loop through all players and check if they are ready
