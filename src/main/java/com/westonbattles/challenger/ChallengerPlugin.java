@@ -4,8 +4,8 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.westonbattles.challenger.commands.HideStartUICommand;
-import com.westonbattles.challenger.commands.ShowStartUICommand;
+import com.westonbattles.challenger.commands.HideBossUICommand;
+import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.events.OpenGuiListener;
 
 import javax.annotation.Nonnull;
@@ -28,7 +28,7 @@ public class ChallengerPlugin extends JavaPlugin {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OpenGuiListener::openGui);
 
-        this.getCommandRegistry().registerCommand(new ShowStartUICommand("showbossui", ""));
-        this.getCommandRegistry().registerCommand(new HideStartUICommand("hidebossui", ""));
+        this.getCommandRegistry().registerCommand(new ShowBossUICommand("showbossui", ""));
+        this.getCommandRegistry().registerCommand(new HideBossUICommand("hidebossui", ""));
     }
 }
