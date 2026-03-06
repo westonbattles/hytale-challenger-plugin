@@ -36,7 +36,6 @@ public class GameManager {
 	 * Readiness is determined based on their playerComponent isReady variable. Returns true if 0 players are playing
 	 */
 	public boolean playersReady(){
-		// TODO: loop through players and check if they are ready based on their game component ready variable
 
 		for (PlayerRef playerRef : players) {
 			// Get reference to the player reference (lmao)
