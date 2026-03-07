@@ -16,7 +16,17 @@
     "Secondary": {
       "Interactions": [
         {
-          "Type": "template_interaction"
+          "Type": "Charging",
+          "FailsOnDamage": "False",
+          "HorizontalSpeedMultiplier": 0.5,
+          "Next": {
+            "1": {
+              "Type": "template_interaction"
+            }
+          },
+          "Failed": {
+            "Type": "Simple"
+          }
         }
       ]
     }

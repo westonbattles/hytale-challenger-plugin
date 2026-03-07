@@ -1,0 +1,22 @@
+{
+  "Type": "Explode",
+  "Config": {
+    "DamageEntities": true,
+    "DamageBlocks": false,
+    "EntityDamage": 1.0,
+    "EntityDamageRadius": 10,
+    "Knockback": {
+      "Type": "Point",
+      "VelocityY": 25.0,
+      "VelocityConfig": {
+        "AirResistance": 0.97,
+        "AirResistanceMax": 0.96,
+        "GroundResistance": 0.94,
+        "GroundResistanceMax": 0.3,
+        "Threshold": 3.0
+      },
+      "Force": 15.0,
+      "VelocityType": "Set"
+    }
+  }
+}

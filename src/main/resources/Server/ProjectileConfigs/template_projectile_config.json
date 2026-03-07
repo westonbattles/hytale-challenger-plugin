@@ -1,0 +1,53 @@
+{
+  "Id": "template_projectile",
+  "Model": "template_projectile",
+  "Physics": {
+    "Type": "Standard",
+    "Gravity": 30,
+    "TerminalVelocityAir": 50.0,
+    "TerminalVelocityWater": 15.0,
+    "RotationMode": "VelocityDamped",
+    "Bounciness": 0.0,
+    "SticksVertically": true
+  },
+  "LaunchForce:": 80,
+  "SpawnOffset": {
+    "X": 0,
+    "Y": 2,
+    "Z": 0
+  },
+  "Interactions": {
+    "ProjectileHit": {
+      "Interactions": [
+        "Wind_Blast",
+        {
+          "Type": "Simple",
+          "RunTime": 0.2
+        },
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileMiss": {
+      "Interactions": [
+        "Wind_Blast",
+        {
+          "Type": "Simple",
+          "RunTime": 0.2
+        },
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileBounce": {
+      "Interactions": [
+        {
+          "Type": "Simple",
+          "RunTime": 0.1
+        },
+        "Common_Projectile_Despawn"
+      ]
+    }
+  },
+  "LaunchWorldSoundEventId": null,
+  "LaunchLocalSoundEventId": null,
+  "ProjectileSoundEventId": null
+}
