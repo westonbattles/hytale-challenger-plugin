@@ -32,9 +32,14 @@ public class JoinGameCommand extends AbstractPlayerCommand {
         GameManager gameManager = ChallengerPlugin.get().getGameManager();
         gameManager.addPlayer(playerRef);
 
-        PlayerRole role = gameManager.getRole(playerRef);
+        for (PlayerRef player : gameManager.getPlayers()) {
+            playerRef.sendMessage(Message.raw("Player: " + player.getUsername()));
+        }
+
+
+        /*PlayerRole role = gameManager.getRole(playerRef);
 
         if (role == null) playerRef.sendMessage(Message.raw("Player role is null"));
-        else playerRef.sendMessage(Message.raw("Player role: " + role.name()));
+        else playerRef.sendMessage(Message.raw("Player role: " + role.name()));*/
     }
 }

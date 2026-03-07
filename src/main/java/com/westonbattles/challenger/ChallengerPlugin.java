@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.commands.HideBossUICommand;
+import com.westonbattles.challenger.commands.JoinGameCommand;
 import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.events.OpenGuiListener;
@@ -50,7 +51,7 @@ public class ChallengerPlugin extends JavaPlugin {
         //Commands
         this.getCommandRegistry().registerCommand(new ShowBossUICommand("showbossui", "shows the boss ui"));
         this.getCommandRegistry().registerCommand(new HideBossUICommand("hidebossui", "hides the boss ui"));
-        this.getCommandRegistry().registerCommand(new HideBossUICommand("joingame", "(TESTING) adds player component and other stuff"));
+        this.getCommandRegistry().registerCommand(new JoinGameCommand("joingame", "(TESTING) adds player component and other stuff"));
         //Components
         this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Interactions

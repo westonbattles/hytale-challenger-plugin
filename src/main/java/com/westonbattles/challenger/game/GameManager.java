@@ -24,11 +24,14 @@ public class GameManager {
 	public void addPlayer(@Nonnull PlayerRef playerRef) {
 
 		// Make sure we aren't adding a player that is already here
-		if (players.contains(playerRef)) return;
+		if (players.contains(playerRef)) {
+			ChallengerPlugin.LOGGER.atWarning().log("Cannot add player \"" + playerRef.getUsername() +"\": already in game");
+			return;
+		}
 
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {
-			ChallengerPlugin.LOGGER.atSevere().log("Failed adding " + playerRef.getUsername() +" to player list: playerRef.getReference() was null.");
+			ChallengerPlugin.LOGGER.atSevere().log("Cannot add player \"" + playerRef.getUsername() +"\": playerRef.getReference() was null");
 			return;
 		}
 
@@ -45,13 +48,13 @@ public class GameManager {
 
 		// Make sure the player we are trying to remove is actually in the list of players
 		if (!players.contains(playerRef)) {
-			ChallengerPlugin.LOGGER.atWarning().log("Failed removing " + playerRef.getUsername() +" from player list as they are not in the list.");
+			ChallengerPlugin.LOGGER.atWarning().log("Cannot remove player \"" + playerRef.getUsername() +"\": not in game");
 			return;
 		}
 
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {
-			ChallengerPlugin.LOGGER.atSevere().log("Failed removing " + playerRef.getUsername() +" from player list: playerRef.getReference() was null.");
+			ChallengerPlugin.LOGGER.atSevere().log("Cannot remove player \"" + playerRef.getUsername() +"\": playerRef.getReference() was null");
 			return;
 		}
 
@@ -59,16 +62,6 @@ public class GameManager {
 		this.getStore().removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
 
 		players.remove(playerRef);
-	}
-
-	@Nullable
-	public PlayerRole getRole(PlayerRef playerRef) {
-
-		PlayerComponent playerComponent = getPlayerComponent(playerRef);
-		if (playerComponent == null) return null;
-
-		return playerComponent.getRole();
-
 	}
 
 	/**
@@ -84,7 +77,7 @@ public class GameManager {
 
 			// If the playerComponent is null we just remove the player from the list of players idk what would cause this to happen but oh well
 			if (playerComponent == null) {
-				ChallengerPlugin.LOGGER.atSevere().log(playerRef.getUsername() + " playerComponent is null: Removing them from player list");
+				ChallengerPlugin.LOGGER.atSevere().log(playerRef.getUsername() + " playerComponent is null: Removing them from game");
 				players.remove(playerRef);
 				continue;
 			}
@@ -129,6 +122,20 @@ public class GameManager {
 	// Gets a reference to the world the minigame is running in
 	public World getWorld(){
 		return Universe.get().getDefaultWorld();
+	}
+
+	@Nullable
+	public PlayerRole getRole(PlayerRef playerRef) {
+
+		PlayerComponent playerComponent = getPlayerComponent(playerRef);
+		if (playerComponent == null) return null;
+
+		return playerComponent.getRole();
+
+	}
+
+	public List<PlayerRef> getPlayers() {
+		return players;
 	}
 
 }
