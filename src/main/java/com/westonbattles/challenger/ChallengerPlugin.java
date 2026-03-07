@@ -50,6 +50,7 @@ public class ChallengerPlugin extends JavaPlugin {
         //Commands
         this.getCommandRegistry().registerCommand(new ShowBossUICommand("showbossui", "shows the boss ui"));
         this.getCommandRegistry().registerCommand(new HideBossUICommand("hidebossui", "hides the boss ui"));
+        this.getCommandRegistry().registerCommand(new HideBossUICommand("joingame", "(TESTING) adds player component and other stuff"));
         //Components
         this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Interactions

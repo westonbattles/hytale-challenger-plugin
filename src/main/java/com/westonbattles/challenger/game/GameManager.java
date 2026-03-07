@@ -2,6 +2,7 @@ package com.westonbattles.challenger.game;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.command.commands.player.effect.PlayerEffectApplyCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -10,6 +11,7 @@ import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.components.PlayerComponent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,15 @@ public class GameManager {
 		players.remove(playerRef);
 	}
 
+	@Nullable
+	public PlayerRole getRole(PlayerRef playerRef) {
+
+		PlayerComponent playerComponent = getPlayerComponent(playerRef);
+		if (playerComponent == null) return null;
+
+		return playerComponent.getRole();
+
+	}
 
 	/**
 	 * Loop through all players and check if they are ready
@@ -68,19 +79,12 @@ public class GameManager {
 	public boolean playersReady(){
 
 		for (PlayerRef playerRef : players) {
-			// Get reference to the player reference (lmao)
-			Ref<EntityStore> ref = playerRef.getReference();
-			// If the reference is null we just remove the player from the list of players idk what would cause this to happen but oh well
-			if (ref == null) {
-				ChallengerPlugin.LOGGER.atSevere().log("Failed to get ref for " + playerRef.getUsername() +", removing them from player list...");
-				players.remove(playerRef);
-				continue;
-			}
 
-			// Get the playerComponent of the player (and do similar null checking)
-			PlayerComponent playerComponent = getStore().getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
+			PlayerComponent playerComponent = getPlayerComponent(playerRef);
+
+			// If the playerComponent is null we just remove the player from the list of players idk what would cause this to happen but oh well
 			if (playerComponent == null) {
-				ChallengerPlugin.LOGGER.atSevere().log("Could not get PlayerComponent for " + playerRef.getUsername() +", removing them from player list...");
+				ChallengerPlugin.LOGGER.atSevere().log(playerRef.getUsername() + " playerComponent is null: Removing them from player list");
 				players.remove(playerRef);
 				continue;
 			}
@@ -93,7 +97,6 @@ public class GameManager {
 	}
 
 	// Transition methods
-
 	public void startGame(){
 		state = GameState.Countdown;
 	}
@@ -102,6 +105,24 @@ public class GameManager {
 		state = GameState.Concluded;
 	}
 
+	@Nullable
+	private PlayerComponent getPlayerComponent(PlayerRef playerRef) {
+		Ref<EntityStore> ref = playerRef.getReference();
+		if (ref == null) {
+			ChallengerPlugin.LOGGER.atSevere().log("Failed getting ref for " + playerRef.getUsername());
+			return null;
+		}
+
+		PlayerComponent playerComponent = getStore().getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
+		if (playerComponent == null) {
+			ChallengerPlugin.LOGGER.atSevere().log("Failed getting PlayerComponent for " + playerRef.getUsername());
+			players.remove(playerRef);
+			return null;
+		}
+		return playerComponent;
+	}
+
+	// Helpful Getters
 	public Store<EntityStore> getStore() {
 		return getWorld().getEntityStore().getStore();
 	}
