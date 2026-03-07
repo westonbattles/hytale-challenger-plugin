@@ -13,6 +13,7 @@ import com.westonbattles.challenger.commands.HideBossUICommand;
 import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.events.OpenGuiListener;
+import com.westonbattles.challenger.game.GameManager;
 import com.westonbattles.challenger.interactions.TemplateInteraction;
 import com.westonbattles.challenger.events.TestEvent;
 
@@ -27,6 +28,8 @@ public class ChallengerPlugin extends JavaPlugin {
     private static ChallengerPlugin instance;
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
+    private GameManager gameManager;
+
     private ComponentType<EntityStore, PlayerComponent> playerComponent;
 
     public ChallengerPlugin(@Nonnull JavaPluginInit init) {
@@ -37,7 +40,10 @@ public class ChallengerPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
+
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
+        this.gameManager = new GameManager();
+
         //Events
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OpenGuiListener::openGui);
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, TestEvent::onPlayerReady);
@@ -50,10 +56,16 @@ public class ChallengerPlugin extends JavaPlugin {
         this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
     }
 
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
     public ComponentType<EntityStore, PlayerComponent> getPlayerComponentType() {
         return playerComponent;
     }
+
     public static ChallengerPlugin get() {
         return instance;
     }
+
 }

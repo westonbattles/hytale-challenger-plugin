@@ -2,7 +2,6 @@ package com.westonbattles.challenger.game;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -19,21 +18,22 @@ public class GameManager {
 
 	public GameState state = GameState.Waiting;
 	private final List<PlayerRef> players = new ArrayList<>();
-	Store<EntityStore> store = GameManager.getWorld().getEntityStore().getStore();
 
 	public void addPlayer(@Nonnull PlayerRef playerRef) {
+
+		// Make sure we aren't adding a player that is already here
+		if (players.contains(playerRef)) return;
 
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {
 			ChallengerPlugin.LOGGER.atSevere().log("Failed adding " + playerRef.getUsername() +" to player list: playerRef.getReference() was null.");
-			players.remove(playerRef);
 			return;
 		}
 
 		// Add playerComponent to player
 		PlayerComponent playerComponent = new PlayerComponent();
 		// putComponent appears to automatically replace the component if the entity already has it
-		store.putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
+		getStore().putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
 
 		// Add player to player list
 		players.add(playerRef);
@@ -47,7 +47,14 @@ public class GameManager {
 			return;
 		}
 
+		Ref<EntityStore> ref = playerRef.getReference();
+		if (ref == null) {
+			ChallengerPlugin.LOGGER.atSevere().log("Failed removing " + playerRef.getUsername() +" from player list: playerRef.getReference() was null.");
+			return;
+		}
+
 		// Remove the player component of the player
+		this.getStore().removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
 
 		players.remove(playerRef);
 	}
@@ -71,7 +78,7 @@ public class GameManager {
 			}
 
 			// Get the playerComponent of the player (and do similar null checking)
-			PlayerComponent playerComponent = store.getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
+			PlayerComponent playerComponent = getStore().getComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
 			if (playerComponent == null) {
 				ChallengerPlugin.LOGGER.atSevere().log("Could not get PlayerComponent for " + playerRef.getUsername() +", removing them from player list...");
 				players.remove(playerRef);
@@ -95,8 +102,11 @@ public class GameManager {
 		state = GameState.Concluded;
 	}
 
+	public Store<EntityStore> getStore() {
+		return getWorld().getEntityStore().getStore();
+	}
 	// Gets a reference to the world the minigame is running in
-	public static World getWorld(){
+	public World getWorld(){
 		return Universe.get().getDefaultWorld();
 	}
 
