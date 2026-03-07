@@ -2,10 +2,8 @@ package com.westonbattles.challenger;
 
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.event.events.player.DrainPlayerFromWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
-import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -13,7 +11,6 @@ import com.westonbattles.challenger.commands.HideBossUICommand;
 import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.game.GameManager;
-import com.westonbattles.challenger.interactions.TemplateInteraction;
 import com.westonbattles.challenger.listeners.PlayerDisconnectListener;
 import com.westonbattles.challenger.listeners.PlayerReadyListener;
 
@@ -53,7 +50,7 @@ public class ChallengerPlugin extends JavaPlugin {
         //Components
         this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Interactions
-        this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
+        //this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
     }
 
     public GameManager getGameManager() {
@@ -63,9 +60,7 @@ public class ChallengerPlugin extends JavaPlugin {
     public ComponentType<EntityStore, PlayerComponent> getPlayerComponentType() {
         return playerComponent;
     }
-
     public static ChallengerPlugin get() {
         return instance;
     }
-
 }
