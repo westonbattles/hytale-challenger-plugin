@@ -2,9 +2,7 @@ package com.westonbattles.challenger;
 
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
-import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
@@ -13,7 +11,6 @@ import com.westonbattles.challenger.commands.HideBossUICommand;
 import com.westonbattles.challenger.commands.ShowBossUICommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.events.OpenGuiListener;
-import com.westonbattles.challenger.interactions.TemplateInteraction;
 import com.westonbattles.challenger.events.TestEvent;
 
 import javax.annotation.Nonnull;
@@ -47,7 +44,7 @@ public class ChallengerPlugin extends JavaPlugin {
         //Components
         this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Interactions
-        this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
+        //this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
     }
 
     public ComponentType<EntityStore, PlayerComponent> getPlayerComponentType() {

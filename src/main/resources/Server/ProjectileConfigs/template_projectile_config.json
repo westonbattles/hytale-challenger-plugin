@@ -10,7 +10,7 @@
     "Bounciness": 0.0,
     "SticksVertically": true
   },
-  "LaunchForce:": 80,
+  "LaunchForce": 80,
   "SpawnOffset": {
     "X": 0,
     "Y": 2,

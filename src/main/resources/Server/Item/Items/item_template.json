@@ -21,7 +21,8 @@
           "HorizontalSpeedMultiplier": 0.5,
           "Next": {
             "1": {
-              "Type": "template_interaction"
+              "Type": "Projectile",
+              "Config": "template_projectile_config"
             }
           },
           "Failed": {
