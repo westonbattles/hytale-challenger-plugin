@@ -26,14 +26,11 @@ public class PlayerReadyListener {
         if (playerJoinedMinigameWorld) {
             // Add the player
             gameManager.addPlayer(playerRef);
-            // Check if component add worked
-            playerRef.sendMessage(Message.raw("Added player with role: " + gameManager.getRole(playerRef)));
         }
         // Otherwise, they are joining a different world, so we need to remove them as a player if they're leaving the minigame world
         else if (gameManager.getPlayers().contains(playerRef)){
             // Remove the player
             gameManager.removePlayer(playerRef, world);
-            playerRef.sendMessage(Message.raw("Removed player"));
         }
     }
 }
