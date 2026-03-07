@@ -15,12 +15,15 @@
   "MaxScale": 1,
   "DefaultAttachments": [
     {
-      "Model": "Items/Projectiles/template_projectile.blockymodel",
-      "Texture": "Items/Projectiles/template_projectile.png"
+      "Model": "Items/Projectiles/red_laser.blockymodel",
+      "Texture": "Items/Projectiles/red_laser.png"
     }
   ],
   "Model": "Items/Projectiles/Projectile.blockymodel",
   "Texture": "Items/Projectiles/Projectile_default.png",
+  "Light": {
+    "Color": "#fff"
+  },
   "AnimationSets": {
     "Idle": {
       "Animations": [

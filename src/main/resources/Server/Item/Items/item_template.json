@@ -22,7 +22,7 @@
           "Next": {
             "1": {
               "Type": "Projectile",
-              "Config": "template_projectile_config"
+              "Config": "red_laser_config"
             }
           },
           "Failed": {

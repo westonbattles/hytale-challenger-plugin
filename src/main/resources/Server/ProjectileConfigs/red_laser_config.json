@@ -1,6 +1,6 @@
 {
-  "Id": "template_projectile",
-  "Model": "template_projectile",
+  "Id": "red_laser",
+  "Model": "red_laser",
   "SpawnRotationOffset": {
     "Pitch": 2,
     "Yaw": 0.25,
@@ -8,14 +8,14 @@
   },
   "Physics": {
     "Type": "Standard",
-    "Gravity": 30,
+    "Gravity": 0,
     "TerminalVelocityAir": 50.0,
     "TerminalVelocityWater": 15.0,
     "RotationMode": "VelocityDamped",
     "Bounciness": 0.0,
     "SticksVertically": true
   },
-  "LaunchForce": 80,
+  "LaunchForce": 12,
   "SpawnOffset": {
     "X": 0.15,
     "Y": -0.25,
