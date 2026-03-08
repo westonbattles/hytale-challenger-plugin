@@ -1,7 +1,7 @@
 {
   "RenderMode": "Erosion",
-  "ParticleRotationInfluence": "None",
-  "MaxConcurrentParticles": 10,
+  "ParticleRotationInfluence": "BillboardVelocity",
+  "MaxConcurrentParticles": 5,
   "ParticleLifeSpan": {
     "Min": 0.1,
     "Max": 0.2
@@ -59,21 +59,7 @@
           "Max": 2.0
         }
       },
-      "Opacity": 0.844,
-      "Rotation": {
-        "X": {
-          "Min": -5.0,
-          "Max": 5.0
-        },
-        "Y": {
-          "Min": -2.0,
-          "Max": 2.0
-        },
-        "Z": {
-          "Min": -2.0,
-          "Max": 2.0
-        }
-      }
+      "Opacity": 0.844
     }
   },
   "LinearFiltering": true,
@@ -88,28 +74,20 @@
   "ParticleRotateWithSpawner": true,
   "CameraOffset": -0.16,
   "SpawnRate": {
-    "Min": 4.0,
-    "Max": 4.0
+    "Min": 1.0,
+    "Max": 1.0
   },
   "UseEmitDirection": false,
   "WaveDelay": {
     "Min": 0.0,
     "Max": 0.1
   },
-  "InitialVelocity": {
-    "Speed": {
-      "Min": 4.0,
-      "Max": 4.0
-    },
-    "Pitch": {
-      "Min": 90.0,
-      "Max": 90.0
-    },
-    "Yaw": {
-      "Min": 90.0,
-      "Max": 90.0
+  "Attractors": [
+    {
+      "LinearAcceleration": {
+        "Y": 40.0
+      }
     }
-  },
+  ],
   "VelocityStretchMultiplier": 1.0
-
 }

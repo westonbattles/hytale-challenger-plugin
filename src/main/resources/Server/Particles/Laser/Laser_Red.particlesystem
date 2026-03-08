@@ -7,6 +7,12 @@
       }
     },
     {
+      "SpawnerId": "Laser_Red_Overlay_Flat",
+      "PositionOffset": {
+        "Y": -3.5
+      }
+    },
+    {
       "SpawnerId": "Laser_Red_Overlay",
       "PositionOffset": {
         "Y": -3.5
