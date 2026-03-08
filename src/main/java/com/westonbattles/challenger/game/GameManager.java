@@ -93,6 +93,9 @@ public class GameManager {
 		this.getStoreFromWorld(world).removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
 
 		players.remove(playerRef);
+
+		// If the player who left is the only one who wasn't ready, the game should be started so we need to preform this check
+		if (shouldStart()) startGame();
 	}
 
 	public void removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
@@ -107,14 +110,8 @@ public class GameManager {
 
 		for (PlayerRef playerRef : players) {
 
-			PlayerComponent playerComponent = getPlayerComponentOrNull(playerRef);
-
-			// If the playerComponent is null we just remove the player from the list of players idk what would cause this to happen but oh well
-			if (playerComponent == null) {
-				ChallengerPlugin.LOGGER.atSevere().log(playerRef.getUsername() + " playerComponent is null: Removing them from game");
-				players.remove(playerRef);
-				continue;
-			}
+			// If playerComponent doesn't exist for this player for whatever reason, this function will ad it
+			PlayerComponent playerComponent = ensureAndGetPlayerComponent(playerRef);
 
 			// We return false unless every player is ready
 			if (!playerComponent.isReady()) return false;
@@ -123,13 +120,19 @@ public class GameManager {
 		return true;
 	}
 
+	public boolean shouldStart() {
+		return state == GameState.Waiting && players.size() >= 2 && playersReady();
+	}
+
 	// Transition methods
 	public void startGame(){
 		state = GameState.Countdown;
+		ChallengerPlugin.LOGGER.atInfo().log("STARTING GAME");
 	}
 
 	public void EndGame(){
-		state = GameState.Concluded;
+		state = GameState.Waiting;
+		ChallengerPlugin.LOGGER.atInfo().log("ENDING GAME");
 	}
 
 	@Nullable
@@ -162,6 +165,16 @@ public class GameManager {
 			return null;
 		}
 		return playerComponent;
+	}
+
+	public PlayerComponent ensureAndGetPlayerComponent(PlayerRef playerRef) {
+
+		assert getWorld().getWorldConfig().getUuid().equals(playerRef.getWorldUuid());
+
+		Ref<EntityStore> ref = playerRef.getReference();
+		assert ref != null;
+
+		return getStore().ensureAndGetComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
 	}
 
 	// Helpful Getters

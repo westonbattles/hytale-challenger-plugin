@@ -1,5 +1,6 @@
 package com.westonbattles.challenger;
 
+import com.hypixel.hytale.component.ComponentRegistryProxy;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
@@ -10,8 +11,10 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.commands.BossUIHideCommand;
 import com.westonbattles.challenger.commands.BossUIShowCommand;
 import com.westonbattles.challenger.commands.debug.ListPlayersCommand;
+import com.westonbattles.challenger.commands.debug.ReadyCommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.game.GameManager;
+import com.westonbattles.challenger.game.GameSystems;
 import com.westonbattles.challenger.listeners.PlayerDisconnectListener;
 import com.westonbattles.challenger.listeners.PlayerReadyListener;
 
@@ -42,6 +45,9 @@ public class ChallengerPlugin extends JavaPlugin {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
         this.gameManager = new GameManager();
 
+        // Registries
+        ComponentRegistryProxy<EntityStore> entityStoreRegistry = this.getEntityStoreRegistry();
+
         //Listeners
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, PlayerReadyListener::onPlayerReady);
         this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, PlayerDisconnectListener::onPlayerDisconnect);
@@ -49,8 +55,12 @@ public class ChallengerPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new BossUIShowCommand("showbossui", "shows the boss ui"));
         this.getCommandRegistry().registerCommand(new BossUIHideCommand("hidebossui", "hides the boss ui"));
         this.getCommandRegistry().registerCommand(new ListPlayersCommand("listplayers", "Prints the contents of GameManager.players"));
+        this.getCommandRegistry().registerCommand(new ReadyCommand("ready", "toggle ready"));
         //Components
-        this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
+        this.playerComponent = entityStoreRegistry.registerComponent(PlayerComponent.class, PlayerComponent::new);
+        //Systems
+        entityStoreRegistry.registerSystem(new GameSystems.CheckGameStartSystem());
+
         //Interactions
         //this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);
     }

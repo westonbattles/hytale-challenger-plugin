@@ -8,9 +8,10 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.game.GameManager;
 
+// PlayerReady is a hytale listener that triggers when the player loads into to a world
 public class PlayerReadyListener {
-
     public static void onPlayerReady(PlayerReadyEvent event) {
+
         Player player = event.getPlayer();
         World world = player.getWorld();
         GameManager gameManager = ChallengerPlugin.get().getGameManager();
