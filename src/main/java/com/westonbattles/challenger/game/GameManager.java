@@ -37,13 +37,13 @@ public class GameManager {
 
 		// Make sure we aren't adding a player that is already here
 		if (players.contains(playerRef)) {
-			ChallengerPlugin.LOGGER.atWarning().log("Cannot add player \"" + playerRef.getUsername() +"\": already in game");
+			ChallengerPlugin.LOGGER.atWarning().log("Cannot add player '" + playerRef.getUsername() +"': already in game");
 			return;
 		}
 
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {
-			ChallengerPlugin.LOGGER.atSevere().log("Cannot add player \"" + playerRef.getUsername() +"\": playerRef.getReference() was null");
+			ChallengerPlugin.LOGGER.atSevere().log("Cannot add player '" + playerRef.getUsername() +"': playerRef.getReference() was null");
 			return;
 		}
 
@@ -51,6 +51,8 @@ public class GameManager {
 		PlayerComponent playerComponent = new PlayerComponent();
 		// putComponent appears to automatically replace the component if the entity already has it
 		getStore().putComponent(ref, ChallengerPlugin.get().getPlayerComponentType(), playerComponent);
+
+		ChallengerPlugin.LOGGER.atInfo().log("Adding player '" + playerRef.getUsername() +"' to the game");
 
 		// Add player to player list
 		players.add(playerRef);
@@ -85,6 +87,8 @@ public class GameManager {
 			return;
 		}
 
+		ChallengerPlugin.LOGGER.atInfo().log("Removing player '" + playerRef.getUsername() +"' from the game");
+
 		// Remove the player component of the player
 		this.getStoreFromWorld(world).removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
 
@@ -103,7 +107,7 @@ public class GameManager {
 
 		for (PlayerRef playerRef : players) {
 
-			PlayerComponent playerComponent = getPlayerComponent(playerRef);
+			PlayerComponent playerComponent = getPlayerComponentOrNull(playerRef);
 
 			// If the playerComponent is null we just remove the player from the list of players idk what would cause this to happen but oh well
 			if (playerComponent == null) {
@@ -141,7 +145,10 @@ public class GameManager {
 	}
 
 	@Nullable
-	private PlayerComponent getPlayerComponent(PlayerRef playerRef) {
+	public PlayerComponent getPlayerComponentOrNull(PlayerRef playerRef) {
+
+		assert getWorld().getWorldConfig().getUuid().equals(playerRef.getWorldUuid());
+
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {
 			ChallengerPlugin.LOGGER.atSevere().log("Failed getting ref for " + playerRef.getUsername());
@@ -167,18 +174,9 @@ public class GameManager {
 	}
 
 	// Gets a reference to the world the minigame is running in
+
 	public World getWorld(){
 		return Universe.get().getDefaultWorld();
-	}
-
-	@Nullable
-	public PlayerRole getRole(PlayerRef playerRef) {
-
-		PlayerComponent playerComponent = getPlayerComponent(playerRef);
-		if (playerComponent == null) return null;
-
-		return playerComponent.getRole();
-
 	}
 
 	public List<PlayerRef> getPlayers() {

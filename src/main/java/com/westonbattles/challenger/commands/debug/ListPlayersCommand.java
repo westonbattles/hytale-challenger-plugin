@@ -5,6 +5,8 @@ import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.westonbattles.challenger.ChallengerPlugin;
+import com.westonbattles.challenger.components.PlayerComponent;
+import com.westonbattles.challenger.game.GameManager;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
@@ -21,19 +23,24 @@ public class ListPlayersCommand extends AbstractCommand {
 	@Nullable
 	@Override
 	protected CompletableFuture<Void> execute(@Nonnull CommandContext ctx) {
-		List<PlayerRef> players = ChallengerPlugin.get().getGameManager().getPlayers();
+		GameManager gm = ChallengerPlugin.get().getGameManager();
+		List<PlayerRef> players = gm.getPlayers();
 
 		if (players.isEmpty()) {
 			ctx.sendMessage(Message.raw("No players in GameManager.players"));
 			return CompletableFuture.completedFuture(null);
 		}
 
-		ctx.sendMessage(Message.raw("GameManager.players (" + players.size() + "):"));
-		for (int i = 0; i < players.size(); i++) {
-			PlayerRef ref = players.get(i);
-			ctx.sendMessage(Message.raw("  [" + i + "] " + ref.getUsername()));
-		}
+		return CompletableFuture.runAsync(() -> {
+			ctx.sendMessage(Message.raw("GameManager.players (" + players.size() + "):"));
+			for (int i = 0; i < players.size(); i++) {
+				PlayerRef playerRef = players.get(i);
+				PlayerComponent pc = gm.getPlayerComponentOrNull(playerRef);
 
-		return CompletableFuture.completedFuture(null);
+				if (pc == null) continue;
+
+				ctx.sendMessage(Message.raw("  [" + i + "] " + playerRef.getUsername() + " | Role: " + pc.getRole() + " | Ready: " + pc.isReady()));
+			}
+		}, gm.getWorld());
 	}
 }
