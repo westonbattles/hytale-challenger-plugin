@@ -1,6 +1,6 @@
 {
-  "Id": "red_laser",
-  "Model": "red_laser",
+  "Id": "energy_ball",
+  "Model": "energy_ball",
   "SpawnRotationOffset": {
     "Pitch": 2,
     "Yaw": 0.25,
@@ -24,6 +24,7 @@
   "Interactions": {
     "ProjectileHit": {
       "Interactions": [
+        "Wind_Blast",
         {
           "Type": "Simple",
           "RunTime": 0.2
@@ -33,6 +34,7 @@
     },
     "ProjectileMiss": {
       "Interactions": [
+        "Wind_Blast",
         {
           "Type": "Simple",
           "RunTime": 0.2

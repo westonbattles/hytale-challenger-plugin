@@ -1,16 +1,16 @@
 {
   "TranslationProperties": {
-    "Name": "Item Template",
-    "Description": "Item Template Description"
+    "Name": "Laser Attack",
+    "Description": "Periodically Shoots Lasers"
   },
-  "Id": "Item_Template",
-  "Icon": "Icons/ItemsGenerated/item_template.png",
+  "Id": "Laser_Attack",
+  "Icon": "Icons/ItemsGenerated/Ore_Adamantite.png",
   "Model": "Items/item_template/model.blockymodel",
-  "Texture": "Items/item_template/model_texture.png",
+  "Texture": "Resources/Ores/Ore_Textures/Adamantite.png",
   "Quality": "Common",
   "MaxStack": 1,
   "Categories": [
-    "Items.Example"
+    "Items.BossAttacks"
   ],
   "Interactions": {
     "Secondary": {
@@ -22,7 +22,7 @@
           "Next": {
             "1": {
               "Type": "Projectile",
-              "Config": "template_projectile_config"
+              "Config": "red_laser_config"
             }
           },
           "Failed": {

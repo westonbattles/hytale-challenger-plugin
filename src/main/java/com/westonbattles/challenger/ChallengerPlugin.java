@@ -7,8 +7,9 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.westonbattles.challenger.commands.HideBossUICommand;
-import com.westonbattles.challenger.commands.ShowBossUICommand;
+import com.westonbattles.challenger.commands.BossUIHideCommand;
+import com.westonbattles.challenger.commands.BossUIShowCommand;
+import com.westonbattles.challenger.commands.debug.ListPlayersCommand;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.game.GameManager;
 import com.westonbattles.challenger.listeners.PlayerDisconnectListener;
@@ -45,8 +46,9 @@ public class ChallengerPlugin extends JavaPlugin {
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, PlayerReadyListener::onPlayerReady);
         this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, PlayerDisconnectListener::onPlayerDisconnect);
         //Commands
-        this.getCommandRegistry().registerCommand(new ShowBossUICommand("showbossui", "shows the boss ui"));
-        this.getCommandRegistry().registerCommand(new HideBossUICommand("hidebossui", "hides the boss ui"));
+        this.getCommandRegistry().registerCommand(new BossUIShowCommand("showbossui", "shows the boss ui"));
+        this.getCommandRegistry().registerCommand(new BossUIHideCommand("hidebossui", "hides the boss ui"));
+        this.getCommandRegistry().registerCommand(new ListPlayersCommand("listplayers", "Prints the contents of GameManager.players"));
         //Components
         this.playerComponent = this.getEntityStoreRegistry().registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Interactions
