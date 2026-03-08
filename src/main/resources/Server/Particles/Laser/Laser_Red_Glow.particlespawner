@@ -1,0 +1,119 @@
+{
+  "RenderMode": "Erosion",
+  "ParticleRotationInfluence": "Velocity",
+  "MaxConcurrentParticles": 2,
+  "ParticleLifeSpan": {
+    "Min": 0.4,
+    "Max": 0.4
+  },
+  "SpawnRate": {
+    "Min": 0.1,
+    "Max": 0.1
+  },
+  "Particle": {
+    "Texture": "Particles/Textures/Basic/Flash_Spritesheet2.png",
+    "ScaleRatioConstraint": "None",
+    "Animation": {
+      "0": {
+        "Opacity": 0.4,
+        "Color": "#ffc4c4",
+        "Scale": {
+          "Y": {
+            "Min": 1.0,
+            "Max": 1.0
+          },
+          "X": {
+            "Min": 2.0,
+            "Max": 2.0
+          }
+        }
+      },
+      "10": {
+        "Opacity": 1.0,
+        "Scale": {
+          "X": {
+            "Min": 0.4,
+            "Max": 0.4
+          },
+          "Y": {
+            "Min": 1.0,
+            "Max": 1.5
+          }
+        }
+      },
+      "40": {
+        "Opacity": 1.0,
+        "Scale": {
+          "X": {
+            "Min": 0.4,
+            "Max": 0.4
+          },
+          "Y": {
+            "Min": 1.0,
+            "Max": 1.5
+          }
+        }
+      },
+      "90": {
+        "Opacity": 1.0
+      },
+      "100": {
+        "Opacity": 0.4,
+        "Color": "#ff2525"
+      }
+    },
+    "InitialAnimationFrame": {
+      "Scale": {
+        "X": {
+          "Min": 1.0,
+          "Max": 1.0
+        },
+        "Y": {
+          "Min": 1.0,
+          "Max": 1.0
+        }
+      },
+      "Opacity": 1.0,
+      "FrameIndex": {
+        "Max": 3
+      },
+      "Rotation": {
+        "Z": {
+          "Min": 90.0,
+          "Max": 90.0
+        }
+      }
+    },
+    "FrameSize": {
+      "Width": 128,
+      "Height": 128
+    }
+  },
+  "LinearFiltering": true,
+  "UVMotion": {
+    "Texture": "Particles/Textures/UVMotion/FlowMap3.png",
+    "Scale": 1.0,
+    "SpeedX": 0.0,
+    "StrengthCurveType": "Constant",
+    "Strength": 8.2,
+    "SpeedY": 0.96,
+    "AddRandomUVOffset": true
+  },
+  "ParticleRotateWithSpawner": true,
+  "InitialVelocity": {
+    "Speed": {
+      "Min": 4.0,
+      "Max": 4.0
+    },
+    "Pitch": {
+      "Min": 90.0,
+      "Max": 90.0
+    }
+  },
+  "WaveDelay": {
+    "Min": 0.001,
+    "Max": 0.001
+  },
+  "VelocityStretchMultiplier": 20.0,
+  "SpawnBurst": true
+}

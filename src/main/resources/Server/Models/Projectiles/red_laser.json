@@ -13,17 +13,17 @@
   },
   "MinScale": 1,
   "MaxScale": 1,
-  "DefaultAttachments": [
-    {
-      "Model": "Items/Projectiles/red_laser.blockymodel",
-      "Texture": "Items/Projectiles/red_laser.png"
-    }
-  ],
   "Model": "Items/Projectiles/Projectile.blockymodel",
   "Texture": "Items/Projectiles/Projectile_default.png",
   "Light": {
     "Color": "#fff"
   },
+  "Particles": [
+    {
+      "SystemId": "Laser_Red",
+      "TargetNodeName": "Origin_Projectile"
+    }
+  ],
   "AnimationSets": {
     "Idle": {
       "Animations": [

@@ -1,0 +1,9 @@
+{
+  "Spawners": [
+    {
+      "SpawnerId": "Laser_Red_Core"
+    }
+  ],
+  "IsImportant": true,
+  "CullDistance": 30.0
+}
