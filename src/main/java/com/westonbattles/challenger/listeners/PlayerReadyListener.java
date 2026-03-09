@@ -18,21 +18,24 @@ public class PlayerReadyListener {
 
         if (world == null) return;
 
-        // Get the playerRef
-        PlayerRef playerRef = gameManager.getPlayerRef(player, world);
-        if (playerRef == null) return;
+        // Store access must happen on the world thread
+        world.execute(() -> {
+            // Get the playerRef
+            PlayerRef playerRef = gameManager.getPlayerRef(player, world);
+            if (playerRef == null) return;
 
-        // Make sure player is in the correct world for the minigame
-        boolean playerJoinedMinigameWorld = world.equals(gameManager.getWorld());
-        if (playerJoinedMinigameWorld) {
-            // Add the player
-            gameManager.addPlayer(playerRef);
-        }
-        // Otherwise, they are joining a different world, so we need to remove them as a player if they're leaving the minigame world
-        else if (gameManager.getPlayers().contains(playerRef)){
-            // Remove the player
-            gameManager.removePlayer(playerRef, world);
-        }
+            // Make sure player is in the correct world for the minigame
+            boolean playerJoinedMinigameWorld = world.equals(gameManager.getWorld());
+            if (playerJoinedMinigameWorld) {
+                // Add the player
+                gameManager.addPlayer(playerRef);
+            }
+            // Otherwise, they are joining a different world, so we need to remove them as a player if they're leaving the minigame world
+            else if (gameManager.getPlayers().contains(playerRef)){
+                // Remove the player
+                gameManager.removePlayer(playerRef, world);
+            }
+        });
     }
 }
 
