@@ -39,7 +39,7 @@ public class ListPlayersCommand extends AbstractCommand {
 
 				if (pc == null) continue;
 
-				ctx.sendMessage(Message.raw("  [" + i + "] " + playerRef.getUsername() + " | Role: " + pc.getRole() + " | Ready: " + pc.isReady()));
+				ctx.sendMessage(Message.raw(String.format("  [%d] %-20s | Role: %-12s | Ready: %s", i, playerRef.getUsername(), pc.getRole(), pc.isReady())));
 			}
 		}, gm.getWorld());
 	}

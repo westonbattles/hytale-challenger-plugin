@@ -98,8 +98,8 @@ public class GameManager {
 		if (shouldStart()) startGame();
 	}
 
-	public void removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
-		players.remove(playerRef);
+	public boolean removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
+		return players.remove(playerRef); // safe if playerRef not in players
 	}
 
 	/**
@@ -183,7 +183,9 @@ public class GameManager {
 	}
 
 	public Store<EntityStore> getStoreFromWorld(World world) {
-		return world.getEntityStore().getStore();
+		Store<EntityStore> store = world.getEntityStore().getStore();
+		store.assertThread(); // Store must be called from a world thread
+		return store;
 	}
 
 	// Gets a reference to the world the minigame is running in
