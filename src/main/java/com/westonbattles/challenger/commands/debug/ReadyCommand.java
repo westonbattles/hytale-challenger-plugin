@@ -2,7 +2,6 @@ package com.westonbattles.challenger.commands.debug;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -14,6 +13,7 @@ import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.components.PlayerComponent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ReadyCommand extends AbstractPlayerCommand {
@@ -28,7 +28,7 @@ public class ReadyCommand extends AbstractPlayerCommand {
 
         CompletableFuture.runAsync(() -> {
 
-            PlayerComponent playerComponent = ChallengerPlugin.get().getGameManager().getPlayerComponentOrNull(playerRef);
+            PlayerComponent playerComponent = ChallengerPlugin.get().getGameManager().getPlayerComponent(playerRef);
             if (playerComponent == null) commandContext.sendMessage(Message.raw("You are not a player!"));
             else {
                 playerComponent.toggleReady();

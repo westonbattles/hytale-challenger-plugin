@@ -2,7 +2,6 @@ package com.westonbattles.challenger.game;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.command.commands.player.effect.PlayerEffectApplyCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -22,12 +21,6 @@ public class GameManager {
 
 	public GameState state = GameState.Waiting;
 	private final List<PlayerRef> players = new ArrayList<>();
-
-	public void addPlayer(@Nonnull Player player) {
-		PlayerRef playerRef = getPlayerRef(player);
-		if (playerRef == null) return;
-		addPlayer(playerRef);
-	}
 
 	public void addPlayer(@Nonnull PlayerRef playerRef) {
 
@@ -58,22 +51,9 @@ public class GameManager {
 		players.add(playerRef);
 	}
 
-	public void removePlayer(@Nonnull Player player) {
-		PlayerRef playerRef = getPlayerRef(player);
-		if (playerRef == null) return;
-		removePlayer(playerRef, player.getWorld());
-	}
-
-	private void removePlayer(@Nonnull PlayerRef playerRef) {
-
-		UUID worldUUID = playerRef.getWorldUuid();
-		assert worldUUID != null;
-		assert playerRef.getWorldUuid().equals(getWorld().getWorldConfig().getUuid());
-
-		removePlayer(playerRef, getWorld());
-	}
-
-	// Include world so we can get the proper store
+	/**
+	 * Include world so we can get the proper store
+	 */
 	public void removePlayer(@Nonnull PlayerRef playerRef, World world) {
 		// Make sure the player we are trying to remove is actually in the list of players
 		if (!players.contains(playerRef)) {
@@ -124,7 +104,6 @@ public class GameManager {
 		return state == GameState.Waiting && players.size() >= 2 && playersReady();
 	}
 
-	// Transition methods
 	public void startCountdown(){
 		state = GameState.Countdown;
 		ChallengerPlugin.LOGGER.atInfo().log("STARTING COUNTDOWN");
@@ -153,9 +132,8 @@ public class GameManager {
 	}
 
 	@Nullable
-	public PlayerComponent getPlayerComponentOrNull(PlayerRef playerRef) {
-
-		assert getWorld().getWorldConfig().getUuid().equals(playerRef.getWorldUuid());
+	public PlayerComponent getPlayerComponent(PlayerRef playerRef) {
+		if (!getWorld().getWorldConfig().getUuid().equals(playerRef.getWorldUuid())) return null;
 
 		Ref<EntityStore> ref = playerRef.getReference();
 		if (ref == null) {

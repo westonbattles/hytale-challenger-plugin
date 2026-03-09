@@ -7,7 +7,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.components.PlayerComponent;
 import com.westonbattles.challenger.game.GameManager;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +34,7 @@ public class ListPlayersCommand extends AbstractCommand {
 			ctx.sendMessage(Message.raw("GameManager.players (" + players.size() + "):"));
 			for (int i = 0; i < players.size(); i++) {
 				PlayerRef playerRef = players.get(i);
-				PlayerComponent pc = gm.getPlayerComponentOrNull(playerRef);
+				PlayerComponent pc = gm.getPlayerComponent(playerRef);
 
 				if (pc == null) continue;
 
