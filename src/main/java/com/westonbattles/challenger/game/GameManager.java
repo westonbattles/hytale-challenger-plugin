@@ -95,7 +95,7 @@ public class GameManager {
 		players.remove(playerRef);
 
 		// If the player who left is the only one who wasn't ready, the game should be started so we need to preform this check
-		if (shouldStart()) startGame();
+		if (shouldStart()) startCountdown();
 	}
 
 	public boolean removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
@@ -125,8 +125,13 @@ public class GameManager {
 	}
 
 	// Transition methods
-	public void startGame(){
+	public void startCountdown(){
 		state = GameState.Countdown;
+		ChallengerPlugin.LOGGER.atInfo().log("STARTING COUNTDOWN");
+	}
+
+	public void startGame(){
+		state = GameState.Active;
 		ChallengerPlugin.LOGGER.atInfo().log("STARTING GAME");
 	}
 
@@ -187,6 +192,9 @@ public class GameManager {
 		store.assertThread(); // Store must be called from a world thread
 		return store;
 	}
+
+	public void setState(GameState state) {this.state = state;}
+
 
 	// Gets a reference to the world the minigame is running in
 

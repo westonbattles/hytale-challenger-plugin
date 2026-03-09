@@ -59,7 +59,7 @@ public class ChallengerPlugin extends JavaPlugin {
         //Components
         this.playerComponent = entityStoreRegistry.registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Systems
-        entityStoreRegistry.registerSystem(new GameSystems.CheckGameStartSystem());
+        entityStoreRegistry.registerSystem(new GameSystems.CountdownSystem());
 
         //Interactions
         //this.getCodecRegistry(Interaction.CODEC).register("template_interaction", TemplateInteraction.class, TemplateInteraction.CODEC);

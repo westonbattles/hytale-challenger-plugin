@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.game.GameManager;
+import com.westonbattles.challenger.game.GameState;
 
 public class PlayerDisconnectListener {
 
@@ -15,7 +16,7 @@ public class PlayerDisconnectListener {
 
 		// if player was in player list (and got removed), we need to check if we should start the game now
 		if (gameManager.removePlayerFromListOnly(playerRef)){
-			if (gameManager.shouldStart()) gameManager.startGame();
+			if (gameManager.shouldStart()) gameManager.startCountdown();
 		}
 	}
 }
