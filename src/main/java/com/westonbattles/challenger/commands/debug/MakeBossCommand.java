@@ -5,20 +5,19 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.components.PlayerComponent;
+import com.westonbattles.challenger.game.GameManager;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
-public class ReadyCommand extends AbstractPlayerCommand {
+public class MakeBossCommand extends AbstractPlayerCommand {
 
-    public ReadyCommand(@Nonnull String name, @Nonnull String description) {
+    public MakeBossCommand(@Nonnull String name, @Nonnull String description) {
         super(name, description);
     }
 
@@ -26,14 +25,12 @@ public class ReadyCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         CompletableFuture.runAsync(() -> {
 
-            PlayerComponent playerComponent = ChallengerPlugin.get().getGameManager().getPlayerComponent(playerRef);
-            if (playerComponent == null) world.sendMessage(Message.raw("You are not a player!"));
-            else {
-                playerComponent.toggleReady();
-                if (playerComponent.isReady()) world.sendMessage(Message.raw("Ready!"));
-                else world.sendMessage(Message.raw("Uneady!"));
-            }
+            GameManager gameManager = ChallengerPlugin.get().getGameManager();
+            PlayerComponent playerComponent = gameManager.getPlayerComponent(playerRef);
 
+            if (playerComponent == null || !world.equals(gameManager.getWorld())) return;
+
+            gameManager.makeBoss(playerRef);
         }, world);
     }
 }

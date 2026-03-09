@@ -1,6 +1,6 @@
 {
-  "Id": "red_laser",
-  "Model": "red_laser",
+  "Id": "Red_Laser",
+  "Model": "Red_Laser",
   "SpawnRotationOffset": {
     "Pitch": 2,
     "Yaw": 0.25,

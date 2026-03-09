@@ -1,8 +1,16 @@
 package com.westonbattles.challenger.game;
 
 import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.RemoveReason;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.packets.interface_.Page;
+import com.hypixel.hytale.server.core.asset.type.model.config.Model;
+import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
+import com.hypixel.hytale.server.core.cosmetics.CosmeticsModule;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.modules.entity.component.EntityScaleComponent;
+import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
+import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -14,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -54,7 +63,7 @@ public class GameManager {
 	/**
 	 * Include world so we can get the proper store
 	 */
-	public void removePlayer(@Nonnull PlayerRef playerRef, World world) {
+	public void removePlayer(@Nonnull PlayerRef playerRef) {
 		// Make sure the player we are trying to remove is actually in the list of players
 		if (!players.contains(playerRef)) {
 			ChallengerPlugin.LOGGER.atWarning().log("Cannot remove player \"" + playerRef.getUsername() +"\": not in game");
@@ -62,20 +71,23 @@ public class GameManager {
 		}
 
 		Ref<EntityStore> ref = playerRef.getReference();
-		if (ref == null) {
-			ChallengerPlugin.LOGGER.atSevere().log("Cannot remove player \"" + playerRef.getUsername() +"\": playerRef.getReference() was null");
+		if (ref == null || !ref.isValid()) {
+			ChallengerPlugin.LOGGER.atSevere().log("Cannot remove player \"" + playerRef.getUsername() +"\": playerRef.getReference() was null or invalid");
 			return;
 		}
 
 		ChallengerPlugin.LOGGER.atInfo().log("Removing player '" + playerRef.getUsername() +"' from the game");
 
 		// Remove the player component of the player
-		this.getStoreFromWorld(world).removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
+		ref.getStore().removeComponentIfExists(ref, ChallengerPlugin.get().getPlayerComponentType());
 
 		players.remove(playerRef);
 
 		// If the player who left is the only one who wasn't ready, the game should be started so we need to preform this check
-		if (shouldStart()) startCountdown();
+		// shouldStart() accesses the minigame world's store, so it must run on that world's
+		getWorld().execute(() -> {
+				if (shouldStart()) startCountdown();
+		});
 	}
 
 	public boolean removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
@@ -112,23 +124,60 @@ public class GameManager {
 	public void startGame(){
 		state = GameState.Active;
 		ChallengerPlugin.LOGGER.atInfo().log("STARTING GAME");
+		int boss = new Random().nextInt(players.size());
+
+		for (int i = 0; i < players.size(); i++) {
+			if (i == boss) makeBoss(players.get(i));
+			else makeChallenger(players.get(i));
+		}
 	}
 
-	public void EndGame(){
-		state = GameState.Waiting;
-		ChallengerPlugin.LOGGER.atInfo().log("ENDING GAME");
+	public void makeBoss(@Nonnull PlayerRef playerRef) {
+		PlayerComponent pc = ensureAndGetPlayerComponent(playerRef);
+		Ref<EntityStore> ref = playerRef.getReference();
+		assert ref != null && ref.isValid();
+		Store<EntityStore> store = ref.getStore();
+
+		pc.setRole(PlayerRole.Boss);
+
+		String bossModelId = "Shadow_Knight";
+		ModelAsset modelAsset = ModelAsset.getAssetMap().getAsset(bossModelId);
+		if (modelAsset == null) {
+			ChallengerPlugin.LOGGER.atWarning().log(String.format("Could not set boss model for %s: does model '%s' exist?", playerRef.getUsername(), bossModelId));
+			return;
+		}
+
+		Model model = Model.createScaledModel(modelAsset, 1.0f);
+		store.putComponent(ref, ModelComponent.getComponentType(), new ModelComponent(model));
+	}
+
+	private void makeChallenger(@Nonnull PlayerRef playerRef) {
+		PlayerComponent pc = ensureAndGetPlayerComponent(playerRef);
+		pc.setRole(PlayerRole.Challenger);
+	}
+
+	public void resetPlayer(@Nonnull PlayerRef playerRef) {
+		PlayerComponent pc = ensureAndGetPlayerComponent(playerRef);
+		Ref<EntityStore> ref = playerRef.getReference();
+		assert ref != null && ref.isValid();
+		Store<EntityStore> store = ref.getStore();
+
+		pc.setRole(PlayerRole.Unassigned);
+
+		PlayerSkinComponent skinComponent = store.getComponent(ref, PlayerSkinComponent.getComponentType());
+		if (skinComponent != null) {
+			PlayerSkinComponent playerSkinComponent = store.ensureAndGetComponent(ref, PlayerSkinComponent.getComponentType());
+			Model newModel = CosmeticsModule.get().createModel(playerSkinComponent.getPlayerSkin());
+			store.putComponent(ref, ModelComponent.getComponentType(), new ModelComponent(newModel));
+			playerSkinComponent.setNetworkOutdated();
+		}
 	}
 
 	@Nullable
-	private PlayerRef getPlayerRef(@Nonnull Player player) {
-		return getPlayerRef(player, getWorld());
-	}
-
-	@Nullable
-	public PlayerRef getPlayerRef(@Nonnull Player player, @Nonnull World world) {
+	public static PlayerRef getPlayerRef(@Nonnull Player player) {
 		Ref<EntityStore> ref = player.getReference();
-		if (ref == null) return null;
-		return getStoreFromWorld(world).getComponent(ref, PlayerRef.getComponentType());
+		if (ref == null || !ref.isValid()) return null;
+		return ref.getStore().getComponent(ref, PlayerRef.getComponentType());
 	}
 
 	@Nullable
@@ -150,32 +199,30 @@ public class GameManager {
 		return playerComponent;
 	}
 
+	@Nonnull
 	public PlayerComponent ensureAndGetPlayerComponent(PlayerRef playerRef) {
 
 		assert getWorld().getWorldConfig().getUuid().equals(playerRef.getWorldUuid());
 
 		Ref<EntityStore> ref = playerRef.getReference();
-		assert ref != null;
+		assert ref != null && ref.isValid();
 
 		return getStore().ensureAndGetComponent(ref, ChallengerPlugin.get().getPlayerComponentType());
 	}
 
-	// Helpful Getters
 	public Store<EntityStore> getStore() {
-		return getWorld().getEntityStore().getStore();
+		return getStoreFromWorld(getWorld());
 	}
 
-	public Store<EntityStore> getStoreFromWorld(World world) {
+	public static Store<EntityStore> getStoreFromWorld(World world) {
 		Store<EntityStore> store = world.getEntityStore().getStore();
 		store.assertThread(); // Store must be called from a world thread
 		return store;
 	}
 
-	public void setState(GameState state) {this.state = state;}
 
-
-	// Gets a reference to the world the minigame is running in
-
+	/** Gets a reference to the world the minigame is running in
+	 */
 	public World getWorld(){
 		return Universe.get().getDefaultWorld();
 	}
@@ -183,5 +230,7 @@ public class GameManager {
 	public List<PlayerRef> getPlayers() {
 		return players;
 	}
+
+	public void setState(GameState state) {this.state = state;}
 
 }
