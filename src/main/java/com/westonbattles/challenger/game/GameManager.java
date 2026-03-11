@@ -140,7 +140,7 @@ public class GameManager {
 
 		pc.setRole(PlayerRole.Boss);
 
-		String bossModelId = "Shadow_Knight";
+		String bossModelId = "Boss";
 		ModelAsset modelAsset = ModelAsset.getAssetMap().getAsset(bossModelId);
 		if (modelAsset == null) {
 			ChallengerPlugin.LOGGER.atWarning().log(String.format("Could not set boss model for %s: does model '%s' exist?", playerRef.getUsername(), bossModelId));
