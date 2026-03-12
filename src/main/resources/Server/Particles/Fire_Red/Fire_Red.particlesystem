@@ -1,0 +1,29 @@
+{
+  "Spawners": [
+
+    {
+      "SpawnerId": "Fire_Up_Red",
+      "PositionOffset": {
+        "X": 0,
+        "Y": 0.1,
+        "Z": 0
+      },
+      "Attractors": []
+    },
+    {
+      "SpawnerId": "Fire_Center_Red",
+      "PositionOffset": {
+        "X": 0,
+        "Y": 0.1,
+        "Z": 0
+      }
+    },
+    {
+      "SpawnerId": "Fire_Sparks_Red"
+    },
+    {
+      "SpawnerId": "Fireplace_Distortion"
+    }
+  ],
+  "$Comment": "Candidate to stay Cartoon"
+}
