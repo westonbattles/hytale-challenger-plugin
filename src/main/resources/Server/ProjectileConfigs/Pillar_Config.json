@@ -1,0 +1,54 @@
+{
+  "Model": "Red_Laser",
+  "SpawnRotationOffset": {
+    "Pitch": -90,
+    "Yaw": 0,
+    "Roll": 0
+  },
+  "Physics": {
+    "Type": "Standard",
+    "Gravity": 100,
+    "TerminalVelocityAir": 5.0,
+    "TerminalVelocityWater": 5.0,
+    "RotationMode": "Velocity",
+    "Bounciness": 0.0,
+    "RotationForce": 10,
+    "SticksVertically": true
+  },
+  "LaunchForce": 1,
+  "SpawnOffset": {
+    "X": 0,
+    "Y": 0,
+    "Z": 0
+  },
+  "Interactions": {
+    "ProjectileSpawn": {
+      "Interactions": [
+        "Simple_Delay",
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileHit": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileMiss": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileBounce": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    }
+  },
+  "LaunchWorldSoundEventId": null,
+  "LaunchLocalSoundEventId": null,
+  "ProjectileSoundEventId": null
+}

@@ -1,0 +1,14 @@
+{
+  "Type": "ApplyForce",
+  "WaitForGround": false,
+  "ChangeVelocityType": "Set",
+  "Forces": [
+    {
+      "Direction": {
+        "Z": -1.0
+      },
+      "Force": 20.0,
+      "AdjustVertical": true
+    }
+  ]
+}

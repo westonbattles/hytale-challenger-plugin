@@ -1,0 +1,67 @@
+{
+  "Model": "template_projectile",
+  "SpawnRotationOffset": {
+    "Pitch": 0,
+    "Yaw": 0,
+    "Roll": 0
+  },
+  "Physics": {
+    "Type": "Standard",
+    "Gravity": 0,
+    "TerminalVelocityAir": 50.0,
+    "TerminalVelocityWater": 50.0,
+    "RotationMode": "VelocityDamped",
+    "Bounciness": 0.0,
+    "SticksVertically": true,
+    "RotationForce": 10.0
+  },
+  "LaunchForce": 20,
+  "SpawnOffset": {
+    "X": 0,
+    "Y": 0,
+    "Z": -3
+  },
+  "Interactions": {
+    "ProjectileSpawn": {
+      "Interactions": [
+        "Simple_Delay",
+        {
+          "Type": "Projectile",
+          "Config": "Pillar_Config"
+        },
+        "Simple_Delay",
+        {
+          "Type": "Projectile",
+          "Config": "Pillar_Config"
+        },
+        "Simple_Delay",
+        {
+          "Type": "Projectile",
+          "Config": "Pillar_Config"
+        },
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileHit": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileMiss": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    },
+    "ProjectileBounce": {
+      "Interactions": [
+        "Simple_Delay",
+        "Common_Projectile_Despawn"
+      ]
+    }
+  },
+  "LaunchWorldSoundEventId": null,
+  "LaunchLocalSoundEventId": null,
+  "ProjectileSoundEventId": null
+}

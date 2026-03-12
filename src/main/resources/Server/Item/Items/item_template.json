@@ -22,13 +22,18 @@
           "Next": {
             "1": {
               "Type": "Projectile",
-              "Config": "template_projectile_config"
+              "Config": "Grid_Row_Right_Config"
             }
           },
           "Failed": {
             "Type": "Simple"
           }
         }
+      ]
+    },
+    "Ability2": {
+      "Interactions": [
+        "Dash"
       ]
     }
   }
