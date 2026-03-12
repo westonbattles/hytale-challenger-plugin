@@ -17,6 +17,24 @@
   },
   "Particles": [
     {
+      "SystemId": "Impact_Feathers_Black",
+      "TargetNodeName": "Head",
+      "Scale": 0.2,
+      "PositionOffset": { "X": 0.1, "Y": -0.1, "Z": 0.15 }
+    },
+    {
+      "SystemId": "Fire_ChargeWhite",
+      "TargetNodeName": "Head",
+      "Scale": 0.2,
+      "PositionOffset": { "X": 0.1, "Y": 0.2, "Z": 0.15 }
+    },
+    {
+      "SystemId": "Fire_ChargeWhite",
+      "TargetNodeName": "Head",
+      "Scale": 0.2,
+      "PositionOffset": { "X": -0.1, "Y": 0.2, "Z": 0.15 }
+    },
+    {
       "SystemId": "Fire_Red",
       "TargetNodeName": "Head",
       "Scale": 1,
