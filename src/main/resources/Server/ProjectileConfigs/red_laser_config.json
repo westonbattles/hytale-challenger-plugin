@@ -17,8 +17,8 @@
   },
   "LaunchForce": 12,
   "SpawnOffset": {
-    "X": 0.15,
-    "Y": -0.25,
+    "X": 0,
+    "Y": -0.3,
     "Z": 0
   },
   "Interactions": {
