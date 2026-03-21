@@ -11,8 +11,8 @@ $Container = "Common/Container.ui";
 @BossSelectHoveredButtonBackground = PatchStyle(TexturePath: "BossSelect_Hovered.png");
 @BossSelectPressedButtonBackground = PatchStyle(TexturePath: "BossSelect_Pressed.png");
 
-@DefaultDropdownBoxLabelStyle = LabelStyle(TextColor: #96a9be, RenderUppercase: true, VerticalAlignment: Center, FontSize: 13);
-
+@DefaultDropdownBoxLabelStyle = LabelStyle(TextColor: #96a9be, RenderUppercase: true, VerticalAlignment: Center, FontSize: 15);
+@DefaultDropdownBoxEntryLabelStyle = LabelStyle(...@DefaultDropdownBoxLabelStyle, TextColor: #b7cedd);
 @DropdownBoxHeight = 32;
 
 @DefaultDropdownBoxStyle = DropdownBoxStyle(
@@ -24,10 +24,10 @@ $Container = "Common/Container.ui";
   PressedArrowTexturePath: "Common/DropdownPressedCaret.png",
   ArrowWidth: 13,
   ArrowHeight: 18,
-  LabelStyle: $Common.@DefaultDropdownBoxLabelStyle,
-  EntryLabelStyle: $Common.@DefaultDropdownBoxEntryLabelStyle,
-  NoItemsLabelStyle: (...$Common.@DefaultDropdownBoxEntryLabelStyle, TextColor: #b7cedd(0.5)),
-  SelectedEntryLabelStyle: (...$Common.@DefaultDropdownBoxEntryLabelStyle, RenderBold: true),
+  LabelStyle: (...@DefaultDropdownBoxLabelStyle, RenderBold: true, RenderUppercase: false, FontSize: 19),
+  EntryLabelStyle: (...@DefaultDropdownBoxEntryLabelStyle, RenderUppercase: false),
+  NoItemsLabelStyle: (...@DefaultDropdownBoxEntryLabelStyle, TextColor: #b7cedd(0.5)),
+  SelectedEntryLabelStyle: (...@DefaultDropdownBoxEntryLabelStyle, RenderBold: true, RenderUppercase: false),
   HorizontalPadding: 8,
   PanelScrollbarStyle: $Common.@DefaultScrollbarStyle,
   PanelBackground: (TexturePath: "Common/DropdownBox.png", Border: 16),
@@ -47,7 +47,7 @@ $Container = "Common/Container.ui";
 
 
 $Container.@DecoratedContainer {
-  Anchor: (Width: 700, Height: 360);
+  Anchor: (Width: 525, Height: 360);
 
   $Container.@Title {
     Anchor: (Top: -316, Left: 0);
@@ -55,7 +55,7 @@ $Container.@DecoratedContainer {
   }
 
   Group #ButtonGroup {
-    Anchor: (Top: 0, Left: 175, Width: 350, Height: 360);
+    Anchor: (Top: 0, Left: 87.5, Width: 350, Height: 360);
 
     DropdownBox #PlayerList {
       @Anchor = (Top: 115);

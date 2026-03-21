@@ -24,6 +24,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.game.GameManager;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.bson.types.Code;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
@@ -31,37 +32,14 @@ import java.util.*;
 
 public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
 
-    private static final String P1_SELECT_BUTTON_ID = "Player1BossSelectButton";
-    private static final String P2_SELECT_BUTTON_ID = "Player2BossSelectButton";
+    private static final String PLAYER_DROPDOWN_ID = "PlayerList";
     private static final String RANDOM_PLAYER_SELECT_BUTTON_ID = "RandomBossSelectButton";
 
     public BossSelectUI(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime) {
         super(playerRef, lifetime, Data.CODEC);
     }
 
-    /*private void buildPlayerList(@Nonnull UICommandBuilder commandBuilder, @Nonnull UIEventBuilder eventBuilder){
-        commandBuilder.clear("#WarpList");
-        ObjectArrayList<String> warps = new ObjectArrayList<>(this.warps.keySet());
-        if (warps.isEmpty()) {
-            commandBuilder.appendInline("#WarpList", "Label { Text: %server.customUI.warpListPage.noWarps; Style: (Alignment: Center); }");
-        } else {
-            if (!this.searchQuery.isEmpty()) {
-                warps.removeIf(w -> !w.toLowerCase().contains(this.searchQuery));
-            }
-
-            Collections.sort(warps);
-            int i = 0;
-
-            for (int bound = warps.size(); i < bound; i++) {
-                String selector = "#WarpList[" + i + "]";
-                String warp = warps.get(i);
-                commandBuilder.append("#WarpList", "Pages/WarpEntryButton.ui");
-                commandBuilder.set(selector + " #Name.Text", warp);
-                commandBuilder.set(selector + " #World.Text", this.warps.get(warp).getWorld());
-                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selector, EventData.of("Warp", warp), false);
-            }
-        }
-    }*/
+    // TODO: Update dropdown function that dynamically updates the dropdown for things like a player leaving
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
@@ -76,39 +54,61 @@ public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
         }
 
         uiCommandBuilder.set("#PlayerList.Entries", players);
+        uiCommandBuilder.set("#PlayerList.Value", gameManager.getBoss().getUuid().toString());
 
-        List<LocalizableString> selected = new ObjectArrayList<>();
-        selected.add(LocalizableString.fromString(gameManager.getBoss().getUuid().toString()));
-        uiCommandBuilder.set("#PlayerList.SelectedValues", selected);
 
-        // REMOVE ME
-        // Log stuff can delete
-        CustomUICommand[] cList = uiCommandBuilder.getCommands();
-        for (CustomUICommand c : cList) {
-            ChallengerPlugin.LOGGER.atInfo().log(String.format("Selector: %s, Data: %s, Text: %s", c.selector, c.data, c.text));
-        }
-        ChallengerPlugin.LOGGER.atInfo().log("WAHOOOOO");
-
-        //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P1_SELECT_BUTTON_ID, EventData.of("ClickedButton", P1_SELECT_BUTTON_ID), false);
-        //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P2_SELECT_BUTTON_ID, EventData.of("ClickedButton", P2_SELECT_BUTTON_ID), false);
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged, "#"+PLAYER_DROPDOWN_ID, EventData.of("@SelectedPlayer", "#"+PLAYER_DROPDOWN_ID+".Value"), false);
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+RANDOM_PLAYER_SELECT_BUTTON_ID, EventData.of("ClickedButton", RANDOM_PLAYER_SELECT_BUTTON_ID), false);
+    }
+
+    public void updateSelection() {
+        String bossUuid = ChallengerPlugin.get().getGameManager().getBoss().getUuid().toString();
+
+        UICommandBuilder uiCommandBuilder = new UICommandBuilder();
+        uiCommandBuilder.set("#PlayerList.Value", bossUuid);
+        sendUpdate(uiCommandBuilder, false); // false = don't clear existing UI
+    }
+
+    public void updateEntries() {
+        GameManager gameManager = ChallengerPlugin.get().getGameManager();
+        UICommandBuilder uiCommandBuilder = new UICommandBuilder();
+
+        List<DropdownEntryInfo> players = new ObjectArrayList<>();
+
+        for (PlayerRef playerRef : gameManager.getPlayers()) {
+            players.add(new DropdownEntryInfo(LocalizableString.fromString(playerRef.getUsername()), playerRef.getUuid().toString()));
+        }
+
+        uiCommandBuilder.set("#PlayerList.Entries", players);
+        sendUpdate(uiCommandBuilder, false);
     }
 
     @Override
     public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data data) {
+        super.handleDataEvent(ref, store, data);
+
+
+        GameManager gameManager = ChallengerPlugin.get().getGameManager();
         Player player = Objects.requireNonNull(store.getComponent(ref, Player.getComponentType()));
-		switch (data.clickedButton) {
-			case P1_SELECT_BUTTON_ID -> player.sendMessage(Message.raw("TODO: Set boss to player 1"));
-			case P2_SELECT_BUTTON_ID -> player.sendMessage(Message.raw("TODO: Set boss to player 2"));
-			case RANDOM_PLAYER_SELECT_BUTTON_ID -> player.sendMessage(Message.raw("TODO: Set boss to random player"));
-		}
+
+        // random boss button was selected
+		if (data.clickedButton != null) {
+            gameManager.setBossIndex(-1);
+            updateSelection();
+        }
+        if (data.selectedPlayer != null) {
+            gameManager.setBossIndex(UUID.fromString(data.selectedPlayer));
+        }
+        //sendUpdate();
     }
 
     public static class Data {
         public static final BuilderCodec<Data> CODEC = BuilderCodec.builder(Data.class, Data::new)
                 .append(new KeyedCodec<>("ClickedButton", Codec.STRING), (data, s) -> data.clickedButton = s, data -> data.clickedButton).add()
+                .append(new KeyedCodec<>("@SelectedPlayer", Codec.STRING), (data, s) -> data.selectedPlayer = s, data -> data.selectedPlayer).add()
                 .build();
 
         private String clickedButton;
+        private String selectedPlayer;
     }
 }

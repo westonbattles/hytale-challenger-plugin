@@ -8,6 +8,8 @@ import com.hypixel.hytale.server.core.asset.type.model.config.Model;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
 import com.hypixel.hytale.server.core.cosmetics.CosmeticsModule;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.modules.entity.component.EntityScaleComponent;
 import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
@@ -17,6 +19,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.westonbattles.challenger.ChallengerPlugin;
 import com.westonbattles.challenger.components.PlayerComponent;
+import com.westonbattles.challenger.ui.BossSelectUI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -60,6 +63,9 @@ public class GameManager {
 
 		// Add player to player list
 		players.add(playerRef);
+
+		// Refresh all the currently open boss select ui so we can add player to boss select lists of all lists that are currently opennnnenenenen
+		getWorld().execute(this::updateAllBossSelectUIs);
 	}
 
 	/**
@@ -88,6 +94,7 @@ public class GameManager {
 		// If the player who left is the only one who wasn't ready, the game should be started so we need to preform this check
 		// shouldStart() accesses the minigame world's store, so it must run on that world's
 		getWorld().execute(() -> {
+				updateAllBossSelectUIs();
 				if (shouldStart()) startCountdown();
 		});
 	}
@@ -248,11 +255,21 @@ public class GameManager {
 
 		if (index == -1) {
 			Random rand = new Random();
-			this.bossIndex = rand.nextInt(players.size()+1) - 1;
+			this.bossIndex = rand.nextInt(players.size());
 		}
 		else {
 			this.bossIndex = index;
 		}
+	}
+
+	public void setBossIndex (UUID uuid) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getUuid().equals(uuid)) {
+				bossIndex = i;
+				return;
+			}
+		}
+		ChallengerPlugin.LOGGER.atSevere().log("Could not set boss index: Player not in player list!");
 	}
 
 	public void setBossIndex (@Nonnull PlayerRef playerRef) {
@@ -264,6 +281,23 @@ public class GameManager {
 
 		bossIndex = players.indexOf(playerRef);
 
+	}
+
+	public void updateAllBossSelectUIs() {
+		for (PlayerRef playerRef : players) {
+			Ref<EntityStore> ref = playerRef.getReference();
+			if (ref == null) continue;
+			Player player = getStore().getComponent(ref, Player.getComponentType());
+			if (player == null) continue;
+
+			CustomUIPage page = player.getPageManager().getCustomPage();
+			if (page == null) continue; // player doesn't have ui open i think
+			if (page.getClass() == BossSelectUI.class) {
+				BossSelectUI bossSelectUI = (BossSelectUI) page;
+				bossSelectUI.updateSelection();
+				bossSelectUI.updateEntries();
+			}
+		}
 	}
 
 	public void setState(GameState state) {this.state = state;}
