@@ -1,0 +1,21 @@
+{
+  "TranslationProperties": {
+    "Name": "Settings",
+    "Description": "Opens settings GUI"
+  },
+  "Id": "Challenger_Settings",
+  "Icon": "Icons/Items/settings.png",
+  "Quality": "Common",
+  "MaxStack": 1,
+  "Categories": [
+  ],
+  "Interactions": {
+    "Secondary": {
+      "Interactions": [
+        {
+          "Type": "settings_interaction"
+        }
+      ]
+    }
+  }
+}

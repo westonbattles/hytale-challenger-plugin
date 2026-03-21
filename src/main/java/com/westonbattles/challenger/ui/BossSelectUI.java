@@ -6,18 +6,28 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
+import com.hypixel.hytale.protocol.packets.interface_.CustomUICommand;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.prefab.PrefabStore;
+import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
+import com.hypixel.hytale.server.core.ui.LocalizableString;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.westonbattles.challenger.ChallengerPlugin;
+import com.westonbattles.challenger.game.GameManager;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
 
@@ -29,12 +39,58 @@ public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
         super(playerRef, lifetime, Data.CODEC);
     }
 
+    /*private void buildPlayerList(@Nonnull UICommandBuilder commandBuilder, @Nonnull UIEventBuilder eventBuilder){
+        commandBuilder.clear("#WarpList");
+        ObjectArrayList<String> warps = new ObjectArrayList<>(this.warps.keySet());
+        if (warps.isEmpty()) {
+            commandBuilder.appendInline("#WarpList", "Label { Text: %server.customUI.warpListPage.noWarps; Style: (Alignment: Center); }");
+        } else {
+            if (!this.searchQuery.isEmpty()) {
+                warps.removeIf(w -> !w.toLowerCase().contains(this.searchQuery));
+            }
+
+            Collections.sort(warps);
+            int i = 0;
+
+            for (int bound = warps.size(); i < bound; i++) {
+                String selector = "#WarpList[" + i + "]";
+                String warp = warps.get(i);
+                commandBuilder.append("#WarpList", "Pages/WarpEntryButton.ui");
+                commandBuilder.set(selector + " #Name.Text", warp);
+                commandBuilder.set(selector + " #World.Text", this.warps.get(warp).getWorld());
+                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selector, EventData.of("Warp", warp), false);
+            }
+        }
+    }*/
+
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
         uiCommandBuilder.append("BossSelect.ui");
 
-        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P1_SELECT_BUTTON_ID, EventData.of("ClickedButton", P1_SELECT_BUTTON_ID), false);
-        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P2_SELECT_BUTTON_ID, EventData.of("ClickedButton", P2_SELECT_BUTTON_ID), false);
+        GameManager gameManager = ChallengerPlugin.get().getGameManager();
+
+        List<DropdownEntryInfo> players = new ObjectArrayList<>();
+
+        for (PlayerRef playerRef : gameManager.getPlayers()) {
+            players.add(new DropdownEntryInfo(LocalizableString.fromString(playerRef.getUsername()), playerRef.getUuid().toString()));
+        }
+
+        uiCommandBuilder.set("#PlayerList.Entries", players);
+
+        List<LocalizableString> selected = new ObjectArrayList<>();
+        selected.add(LocalizableString.fromString(gameManager.getBoss().getUuid().toString()));
+        uiCommandBuilder.set("#PlayerList.SelectedValues", selected);
+
+        // REMOVE ME
+        // Log stuff can delete
+        CustomUICommand[] cList = uiCommandBuilder.getCommands();
+        for (CustomUICommand c : cList) {
+            ChallengerPlugin.LOGGER.atInfo().log(String.format("Selector: %s, Data: %s, Text: %s", c.selector, c.data, c.text));
+        }
+        ChallengerPlugin.LOGGER.atInfo().log("WAHOOOOO");
+
+        //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P1_SELECT_BUTTON_ID, EventData.of("ClickedButton", P1_SELECT_BUTTON_ID), false);
+        //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+P2_SELECT_BUTTON_ID, EventData.of("ClickedButton", P2_SELECT_BUTTON_ID), false);
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#"+RANDOM_PLAYER_SELECT_BUTTON_ID, EventData.of("ClickedButton", RANDOM_PLAYER_SELECT_BUTTON_ID), false);
     }
 

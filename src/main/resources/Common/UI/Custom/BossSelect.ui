@@ -1,4 +1,7 @@
 $Common = "Common.ui";
+$Sounds = "Sounds.ui";
+$Container = "Common/Container.ui";
+
 
 @ReadyLabel = (FontSize: 40, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
 @ButtonLabel = (FontSize: 16, TextColor: #bdcbd3, RenderBold: true, RenderUppercase: true, HorizontalAlignment: Center, VerticalAlignment: Center, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 12);
@@ -8,42 +11,62 @@ $Common = "Common.ui";
 @BossSelectHoveredButtonBackground = PatchStyle(TexturePath: "BossSelect_Hovered.png");
 @BossSelectPressedButtonBackground = PatchStyle(TexturePath: "BossSelect_Pressed.png");
 
-Group {
-  LayoutMode: Center;
+@DefaultDropdownBoxLabelStyle = LabelStyle(TextColor: #96a9be, RenderUppercase: true, VerticalAlignment: Center, FontSize: 13);
+
+@DropdownBoxHeight = 32;
+
+@DefaultDropdownBoxStyle = DropdownBoxStyle(
+  DefaultBackground: (TexturePath: "Common/Dropdown.png", Border: 16),
+  HoveredBackground: (TexturePath: "Common/DropdownHovered.png", Border: 16),
+  PressedBackground: (TexturePath: "Common/DropdownPressed.png", Border: 16),
+  DefaultArrowTexturePath: "Common/DropdownCaret.png",
+  HoveredArrowTexturePath: "Common/DropdownCaret.png",
+  PressedArrowTexturePath: "Common/DropdownPressedCaret.png",
+  ArrowWidth: 13,
+  ArrowHeight: 18,
+  LabelStyle: $Common.@DefaultDropdownBoxLabelStyle,
+  EntryLabelStyle: $Common.@DefaultDropdownBoxEntryLabelStyle,
+  NoItemsLabelStyle: (...$Common.@DefaultDropdownBoxEntryLabelStyle, TextColor: #b7cedd(0.5)),
+  SelectedEntryLabelStyle: (...$Common.@DefaultDropdownBoxEntryLabelStyle, RenderBold: true),
+  HorizontalPadding: 8,
+  PanelScrollbarStyle: $Common.@DefaultScrollbarStyle,
+  PanelBackground: (TexturePath: "Common/DropdownBox.png", Border: 16),
+  PanelPadding: 2,
+  PanelAlign: Bottom,
+  PanelOffset: 3,
+  EntryHeight: 31,
+  EntriesInViewport: 10,
+  HorizontalEntryPadding: 7,
+  HoveredEntryBackground: (Color: #0a0f17),
+  PressedEntryBackground: (Color: #0f1621),
+  Sounds: $Sounds.@DropdownBox,
+  EntrySounds: $Sounds.@ButtonsLight,
+  FocusOutlineSize: 1,
+  FocusOutlineColor: #ffffff(0.4)
+);
+
+
+$Container.@DecoratedContainer {
   Anchor: (Width: 700, Height: 360);
-  Background: @Background;
-  Group {
-    Anchor: (Left: 120, Width: 10, Height: 10);
-    LayoutMode: Center;
-    Label {
-      Anchor: (Left: 70, Width: 320, Height: 80);
-      Text: "Boss Select:";
-      Style: @ReadyLabel;
-    }
+
+  $Container.@Title {
+    Anchor: (Top: -316, Left: 0);
+    Text: "Boss Select:";
   }
 
   Group #ButtonGroup {
-    Anchor: (Top: 0, Left: 150, Width: 350, Height: 360);
-    TextButton #Player1BossSelectButton {
-      Anchor: (Top: 70, Left: 55, Width: 240, Height: 64);
-      Text: "Player 1";
-      Style: (
-        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
-        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
-        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
-      );
+    Anchor: (Top: 0, Left: 175, Width: 350, Height: 360);
+
+    DropdownBox #PlayerList {
+      @Anchor = (Top: 115);
+
+      Anchor: (...@Anchor, Width: 330, Height: 64);
+      Style: @DefaultDropdownBoxStyle;
     }
-    TextButton #Player2BossSelectButton{
-      Anchor: (Top: 150, Left: 55, Width: 240, Height: 64);
-      Text: "Player 2";
-      Style: (
-        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
-        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
-        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
-      );
-    }
+
+
     TextButton #RandomBossSelectButton{
-      Anchor: (Top: 230, Left: 55, Width: 240, Height: 64);
+      Anchor: (Top: 210, Left: 75, Width: 200, Height: 54);
       Text: "Random";
       Style: (
         Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
@@ -53,3 +76,4 @@ Group {
     }
   }
 }
+

@@ -31,6 +31,8 @@ public class GameManager {
 	public GameState state = GameState.Waiting;
 	private final List<PlayerRef> players = new ArrayList<>();
 
+	private int bossIndex = 0;
+
 	public void addPlayer(@Nonnull PlayerRef playerRef) {
 
 		UUID worldUUID = playerRef.getWorldUuid();
@@ -132,6 +134,10 @@ public class GameManager {
 		}
 	}
 
+	public void makeBoss() {
+		makeBoss(players.get(bossIndex));
+	}
+
 	public void makeBoss(@Nonnull PlayerRef playerRef) {
 		PlayerComponent pc = ensureAndGetPlayerComponent(playerRef);
 		Ref<EntityStore> ref = playerRef.getReference();
@@ -229,6 +235,35 @@ public class GameManager {
 
 	public List<PlayerRef> getPlayers() {
 		return players;
+	}
+
+	public PlayerRef getBoss() {
+		return players.get(bossIndex);
+	}
+
+	public int getBossIndex() { return bossIndex; }
+
+	public void setBossIndex (int index) {
+		assert -1 <= index && index < players.size();
+
+		if (index == -1) {
+			Random rand = new Random();
+			this.bossIndex = rand.nextInt(players.size()+1) - 1;
+		}
+		else {
+			this.bossIndex = index;
+		}
+	}
+
+	public void setBossIndex (@Nonnull PlayerRef playerRef) {
+
+		if (!players.contains(playerRef)) {
+			ChallengerPlugin.LOGGER.atWarning().log("Cannot set boss index for player \"" + playerRef.getUsername() +"\": not in game");
+			return;
+		}
+
+		bossIndex = players.indexOf(playerRef);
+
 	}
 
 	public void setState(GameState state) {this.state = state;}
