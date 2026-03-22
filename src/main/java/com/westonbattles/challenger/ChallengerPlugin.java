@@ -60,6 +60,7 @@ public class ChallengerPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new MakeBossCommand("makeboss", ""));
         this.getCommandRegistry().registerCommand(new ResetPlayerCommand("resetplayer", ""));
         this.getCommandRegistry().registerCommand(new NotificationCommand("notification", ""));
+        this.getCommandRegistry().registerCommand(new SpawnDummiesCommand("spawndummies", ""));
         //Components
         this.playerComponent = entityStoreRegistry.registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Systems
