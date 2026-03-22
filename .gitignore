@@ -6,8 +6,22 @@ build/
 !**/src/test/**/build/
 
 ### Hytale ###
-run/
+run/*
+!run/config.json
 *.bak
+
+# Track only the default world + top-level config
+!run/universe/
+run/universe/*
+!run/universe/worlds/
+!run/universe/config.json
+run/universe/worlds/*
+!run/universe/worlds/default/
+!run/universe/worlds/default/**
+
+# Re-ignore .bak and Time.json inside default world
+run/universe/worlds/default/**/*.bak
+run/universe/worlds/default/**/Time.json
 
 ### IntelliJ IDEA ###
 .idea/
