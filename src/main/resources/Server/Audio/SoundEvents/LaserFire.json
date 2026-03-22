@@ -1,0 +1,13 @@
+{
+  "Volume": -5.0,
+  "StartAttenuationDistance": 2.0,
+  "MaxDistance": 30.0,
+  "Layers": [
+    {
+      "Files": [
+        "Sounds/Attacks/Laser/Laser_1.ogg",
+        "Sounds/Attacks/Laser/Laser_2.ogg"
+      ]
+    }
+  ]
+}

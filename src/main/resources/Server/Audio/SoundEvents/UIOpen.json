@@ -1,0 +1,11 @@
+{
+  "Volume": -3.0,
+  "MaxInstance": 5,
+  "Layers": [
+    {
+      "Files": [
+        "Sounds/InventoryOpen.ogg"
+      ]
+    }
+  ]
+}

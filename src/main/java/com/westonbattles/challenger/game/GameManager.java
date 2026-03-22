@@ -10,6 +10,8 @@ import com.hypixel.hytale.server.core.cosmetics.CosmeticsModule;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.inventory.Inventory;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.component.EntityScaleComponent;
 import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
@@ -23,6 +25,7 @@ import com.westonbattles.challenger.ui.BossSelectUI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.net.spi.InetAddressResolver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -63,6 +66,16 @@ public class GameManager {
 
 		// Add player to player list
 		players.add(playerRef);
+
+		Player player = getStore().getComponent(ref, Player.getComponentType());
+		if (player == null) return;
+
+		Inventory inventory = player.getInventory();
+		inventory.clear();
+		ItemStack settingsItem = new ItemStack("settings");
+		inventory.getHotbar().setItemStackForSlot((short) 8, settingsItem);
+
+
 
 		// Refresh all the currently open boss select ui so we can add player to boss select lists of all lists that are currently opennnnenenenen
 		getWorld().execute(this::updateAllBossSelectUIs);

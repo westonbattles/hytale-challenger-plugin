@@ -1,0 +1,13 @@
+{
+  "Volume": -3.0,
+  "StartAttenuationDistance": 2.0,
+  "MaxDistance": 30.0,
+  "Layers": [
+    {
+      "Looping": true,
+      "Files": [
+        "Sounds/Attacks/Laser/Laser_Loop.ogg"
+      ]
+    }
+  ]
+}

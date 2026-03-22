@@ -1,0 +1,11 @@
+{
+  "Volume": -2.0,
+  "MaxInstance": 5,
+  "Layers": [
+    {
+      "Files": [
+        "Sounds/RandomRoll.ogg"
+      ]
+    }
+  ]
+}

@@ -50,7 +50,7 @@
       ]
     }
   },
-  "LaunchWorldSoundEventId": null,
+  "LaunchWorldSoundEventId": "LaserFire",
   "LaunchLocalSoundEventId": null,
-  "ProjectileSoundEventId": null
+  "ProjectileSoundEventId": "LaserLoop"
 }
