@@ -91,6 +91,9 @@ public class GameManager {
 
 		players.remove(playerRef);
 
+		// if the boss left we gotta find a different boss chat
+		if (bossIndex == players.size()) bossIndex = 0;
+
 		// If the player who left is the only one who wasn't ready, the game should be started so we need to preform this check
 		// shouldStart() accesses the minigame world's store, so it must run on that world's
 		getWorld().execute(() -> {
@@ -100,6 +103,8 @@ public class GameManager {
 	}
 
 	public boolean removePlayerFromListOnly(@Nonnull PlayerRef playerRef) {
+		if (bossIndex == players.size()-1) bossIndex = 0;
+		getWorld().execute(this::updateAllBossSelectUIs);
 		return players.remove(playerRef); // safe if playerRef not in players
 	}
 

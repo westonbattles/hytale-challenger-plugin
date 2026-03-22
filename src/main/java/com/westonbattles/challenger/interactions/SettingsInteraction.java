@@ -43,7 +43,7 @@ public class SettingsInteraction extends SimpleInstantInteraction {
 		player.getPageManager().openCustomPage(ref, commandBuffer.getStore(), new BossSelectUI(playerRef, CustomPageLifetime.CanDismiss));
 
 
-		Universe.get().sendMessage(Message.raw("INTERACTION"));
+		//Universe.get().sendMessage(Message.raw("INTERACTION"));
 		ChallengerPlugin.LOGGER.atInfo().log(String.valueOf(interactionType));
 
 	}
