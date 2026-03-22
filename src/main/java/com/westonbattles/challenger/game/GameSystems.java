@@ -31,6 +31,7 @@ public class GameSystems {
 
 		@Override
 		public void tick(float delta, int index, @Nonnull Store<EntityStore> store) {
+
 			GameManager gameManager = ChallengerPlugin.get().getGameManager();
 			if (gameManager.state != GameState.Countdown) {
 				if (countdown != countdownDuration) countdown = countdownDuration; // reset the countdown
@@ -92,6 +93,8 @@ public class GameSystems {
 		@Override
 		public void tick(float delta, int index, @Nonnull Store<EntityStore> store) {
 			GameManager gameManager = ChallengerPlugin.get().getGameManager();
+
+			if (gameManager.state != GameState.Waiting && gameManager.state != GameState.Concluded) return;
 			if (gameManager.getPlayers().isEmpty()) return;
 
 			World world = store.getExternalData().getWorld();

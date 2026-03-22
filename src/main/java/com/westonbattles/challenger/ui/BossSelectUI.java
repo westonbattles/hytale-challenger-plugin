@@ -131,7 +131,7 @@ public class BossSelectUI extends InteractiveCustomUIPage<BossSelectUI.Data> {
                 .append(new KeyedCodec<>("@SelectedPlayer", Codec.STRING), (data, s) -> data.selectedPlayer = s, data -> data.selectedPlayer).add()
                 .build();
 
-        private String clickedButton;
-        private String selectedPlayer;
+        private String clickedButton = "";
+        private String selectedPlayer = "";
     }
 }
