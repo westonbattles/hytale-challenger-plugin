@@ -662,7 +662,7 @@
                         },
                         {
                           "id": "15",
-                          "name": "cube--C3",
+                          "name": "rhead--C3",
                           "position": {"x": -11.14499, "y": 11.40821, "z": -4},
                           "orientation": {"x": 0, "y": 0, "z": 0.17365, "w": 0.98481},
                           "shape": {
@@ -708,13 +708,13 @@
                             },
                             "unwrapMode": "custom",
                             "visible": true,
-                            "doubleSided": false,
+                            "doubleSided": true,
                             "shadingMode": "flat"
                           }
                         },
                         {
                           "id": "16",
-                          "name": "cube--C4",
+                          "name": "lhead--C4",
                           "position": {"x": 4.85501, "y": 11.40821, "z": -10},
                           "orientation": {"x": 0, "y": 0, "z": -0.17365, "w": 0.98481},
                           "shape": {
@@ -760,7 +760,7 @@
                             },
                             "unwrapMode": "custom",
                             "visible": true,
-                            "doubleSided": false,
+                            "doubleSided": true,
                             "shadingMode": "flat"
                           }
                         },

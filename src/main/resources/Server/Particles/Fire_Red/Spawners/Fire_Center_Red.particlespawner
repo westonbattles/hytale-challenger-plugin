@@ -9,15 +9,11 @@
   "MaxConcurrentParticles": 4,
   "ParticleLifeSpan": {
     "Min": 0.5833333333333334,
-    "Max": 0.75
+    "Max": 0.5833333333333334
   },
   "SpawnRate": {
     "Min": 4.8,
     "Max": 4.8
-  },
-  "TotalParticles": {
-    "Min": -1,
-    "Max": -1
   },
   "InitialVelocity": {
     "Yaw": {

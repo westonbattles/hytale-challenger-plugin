@@ -32,6 +32,7 @@ public class ChallengerPlugin extends JavaPlugin {
     private GameManager gameManager;
 
     private ComponentType<EntityStore, PlayerComponent> playerComponent;
+    private GameSystems.BossParticleSystem bossParticleSystem;
 
     public ChallengerPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -63,6 +64,8 @@ public class ChallengerPlugin extends JavaPlugin {
         this.playerComponent = entityStoreRegistry.registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Systems
         entityStoreRegistry.registerSystem(new GameSystems.CountdownSystem());
+        this.bossParticleSystem = new GameSystems.BossParticleSystem();
+        entityStoreRegistry.registerSystem(bossParticleSystem);
         //Interactions
         this.getCodecRegistry(Interaction.CODEC).register("settings_interaction", SettingsInteraction.class, SettingsInteraction.CODEC);
     }
@@ -74,6 +77,10 @@ public class ChallengerPlugin extends JavaPlugin {
     public ComponentType<EntityStore, PlayerComponent> getPlayerComponentType() {
         return playerComponent;
     }
+    public GameSystems.BossParticleSystem getBossParticleSystem() {
+        return bossParticleSystem;
+    }
+
     public static ChallengerPlugin get() {
         return instance;
     }

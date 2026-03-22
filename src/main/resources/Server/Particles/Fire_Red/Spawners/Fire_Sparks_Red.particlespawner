@@ -23,15 +23,11 @@
   "MaxConcurrentParticles": 20,
   "ParticleLifeSpan": {
     "Min": 0.5,
-    "Max": 1.1
+    "Max": 0.5
   },
   "SpawnRate": {
     "Min": 60,
     "Max": 60
-  },
-  "TotalParticles": {
-    "Min": -1,
-    "Max": -1
   },
   "InitialVelocity": {
     "Speed": {

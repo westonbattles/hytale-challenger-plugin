@@ -36,8 +36,10 @@ public class GameManager {
 
 	public GameState state = GameState.Waiting;
 	private final List<PlayerRef> players = new ArrayList<>();
-
 	private int bossIndex = 0;
+
+	private static double[] LOBBY_SPAWN_POS = {7.5, 16.0, 188.5};
+	private static double[] ARENA_CENTER_POS = {7.5, 5.0, 127.5};
 
 	public void addPlayer(@Nonnull PlayerRef playerRef) {
 
@@ -180,6 +182,9 @@ public class GameManager {
 
 		Model model = Model.createScaledModel(modelAsset, 1.0f);
 		store.putComponent(ref, ModelComponent.getComponentType(), new ModelComponent(model));
+
+		// Reset after model is applied so particles get sent on next tick
+		ChallengerPlugin.get().getBossParticleSystem().reset();
 	}
 
 	private void makeChallenger(@Nonnull PlayerRef playerRef) {

@@ -6,7 +6,13 @@ build/
 !**/src/test/**/build/
 
 ### Hytale ###
-run/
+/run/*
+!/run/config.json
+!/run/universe/
+/run/universe/*
+!/run/universe/worlds/
+/run/universe/worlds/*
+!/run/universe/worlds/default/
 
 ### IntelliJ IDEA ###
 .idea/
