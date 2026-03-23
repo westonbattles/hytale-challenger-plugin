@@ -3,13 +3,17 @@ $Sounds = "Sounds.ui";
 $Container = "Common/Container.ui";
 
 
-@ReadyLabel = (FontSize: 40, RenderBold: true, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+@UnreadyLabel = (FontSize: 16, TextColor: #202626, RenderBold: true, RenderUppercase: true, HorizontalAlignment: Center, VerticalAlignment: Center, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 12);
 @ButtonLabel = (FontSize: 16, TextColor: #bdcbd3, RenderBold: true, RenderUppercase: true, HorizontalAlignment: Center, VerticalAlignment: Center, ShrinkTextToFit: true, MinShrinkTextToFitFontSize: 12);
 
 @Background = PatchStyle(TexturePath: "BossSelectBackground.png");
 @BossSelectDefaultButtonBackground = PatchStyle(TexturePath: "BossSelect.png");
 @BossSelectHoveredButtonBackground = PatchStyle(TexturePath: "BossSelect_Hovered.png");
 @BossSelectPressedButtonBackground = PatchStyle(TexturePath: "BossSelect_Pressed.png");
+
+@UnreadyDefaultButtonBackground = PatchStyle(TexturePath: "UnreadyButton.png");
+@UnreadyHoveredButtonBackground = PatchStyle(TexturePath: "UnreadyButton_Hovered.png");
+@UnreadyPressedButtonBackground = PatchStyle(TexturePath: "UnreadyButton_Pressed.png");
 
 @DefaultDropdownBoxLabelStyle = LabelStyle(TextColor: #96a9be, RenderUppercase: true, VerticalAlignment: Center, FontSize: 15);
 @DefaultDropdownBoxEntryLabelStyle = LabelStyle(...@DefaultDropdownBoxLabelStyle, TextColor: #b7cedd);
@@ -45,16 +49,64 @@ $Container = "Common/Container.ui";
   FocusOutlineColor: #ffffff(0.4)
 );
 
+TabNavigation #MainTabs {
+  Anchor: (Height: 62 + 4, Top: 293, Left: 525+174, Right: 0);
+  Style: $Container.@IconOnlyTopTabsStyle;
+  SelectedTab: "Home";
+
+
+  TabButton #Home {
+    Id: "Home";
+    Icon: "Common/Icons/IconGeneralHome.png";
+    IconSelected: "Common/Icons/IconGeneralHomeActivated.png";
+  }
+
+  TabButton #Settings {
+    Id: "Settings";
+    Icon: "Common/Icons/IconGeneralSettings.png";
+    IconSelected: "Common/Icons/IconGeneralSettingsActivated.png";
+  }
+}
 
 $Container.@DecoratedContainer {
   Anchor: (Width: 525, Height: 360);
 
-  $Container.@Title {
+  $Container.@Title #PageTitle {
     Anchor: (Top: -316, Left: 0);
-    Text: "Boss Select:";
+    Text: "Main Menu:";
   }
 
-  Group #ButtonGroup {
+  Group #HomePage {
+    Anchor: (Top: 0, Left: 87.5, Width: 350, Height: 360);
+    TextButton #ReadyButton{
+      Anchor: (Top: 165, Left: 75, Width: 200, Height: 54);
+      Text: "Ready Up";
+      Style: (
+        Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
+        Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground),
+        Sounds: (
+          Activate: (SoundPath: "Common/Sounds/RandomRoll.ogg", Volume: -2),
+          MouseHover: (SoundPath: $Sounds.@ButtonsLightHover, Volume: 6)
+        )
+      );
+    }
+    TextButton #UnreadyButton{
+      Anchor: (Top: 165, Left: 75, Width: 200, Height: 54);
+      Text: "Unready";
+      Style: (
+        Default: (LabelStyle: @UnreadyLabel, Background: @UnreadyDefaultButtonBackground),
+        Hovered: (LabelStyle: @UnreadyLabel, Background: @UnreadyHoveredButtonBackground),
+        Pressed: (LabelStyle: @UnreadyLabel, Background: @UnreadyPressedButtonBackground),
+        Sounds: (
+          Activate: (SoundPath: "Common/Sounds/RandomRoll.ogg", Volume: -2),
+          MouseHover: (SoundPath: $Sounds.@ButtonsLightHover, Volume: 6)
+        )
+      );
+    }
+  }
+
+  Group #SettingsPage {
     Anchor: (Top: 0, Left: 87.5, Width: 350, Height: 360);
 
     DropdownBox #PlayerList {
@@ -71,7 +123,11 @@ $Container.@DecoratedContainer {
       Style: (
         Default: (LabelStyle: @ButtonLabel, Background: @BossSelectDefaultButtonBackground),
         Hovered: (LabelStyle: @ButtonLabel, Background: @BossSelectHoveredButtonBackground),
-        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground)
+        Pressed: (LabelStyle: @ButtonLabel, Background: @BossSelectPressedButtonBackground),
+        Sounds: (
+          Activate: (SoundPath: "Common/Sounds/RandomRoll.ogg", Volume: -2),
+          MouseHover: (SoundPath: $Sounds.@ButtonsLightHover, Volume: 6)
+        )
       );
     }
   }

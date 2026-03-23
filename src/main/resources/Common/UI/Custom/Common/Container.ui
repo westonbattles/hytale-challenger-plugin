@@ -75,7 +75,18 @@ $Sounds = "../Sounds.ui";
       Overlay: "TabSelectedOverlay.png"
     )
   ),
-  TabSounds: $Sounds.@DefaultTabNavigation
+  TabSounds: (
+    Activate: (
+      SoundPath: "Sounds/DefaultTabActivate.ogg",
+      Volume: -2,
+      MinPitch: -0.2,
+      MaxPitch: 0.2
+    ),
+    MouseHover: (
+      SoundPath: $Sounds.@ButtonsLightHover,
+      Volume: 6
+    )
+  )
 );
 
 @TextTopTabsStyle = TabNavigationStyle(
