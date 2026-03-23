@@ -94,7 +94,7 @@ public class GameSystems {
 		public void tick(float delta, int index, @Nonnull Store<EntityStore> store) {
 			GameManager gameManager = ChallengerPlugin.get().getGameManager();
 
-			if (gameManager.state != GameState.Waiting && gameManager.state != GameState.Concluded) return;
+			if (gameManager.state == GameState.Waiting || gameManager.state == GameState.Countdown) return;
 			if (gameManager.getPlayers().isEmpty()) return;
 
 			World world = store.getExternalData().getWorld();

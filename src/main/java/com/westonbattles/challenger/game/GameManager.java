@@ -3,6 +3,9 @@ package com.westonbattles.challenger.game;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.RemoveReason;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.math.vector.Transform;
+import com.hypixel.hytale.math.vector.Vector3d;
+import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.asset.type.model.config.Model;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
@@ -15,6 +18,7 @@ import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.component.EntityScaleComponent;
 import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
+import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -153,11 +157,41 @@ public class GameManager {
 	public void startGame(){
 		state = GameState.Active;
 		ChallengerPlugin.LOGGER.atInfo().log("STARTING GAME");
-		int boss = new Random().nextInt(players.size());
 
 		for (int i = 0; i < players.size(); i++) {
-			if (i == boss) makeBoss(players.get(i));
+
+			// Clear inventory
+			Ref<EntityStore> ref = players.get(i).getReference();
+			assert ref != null && ref.isValid();
+			Player player = getStore().getComponent(ref, Player.getComponentType());
+			assert player != null;
+			Inventory inventory = player.getInventory();
+			inventory.clear();
+
+			if (i == bossIndex) makeBoss(players.get(i));
 			else makeChallenger(players.get(i));
+		}
+	}
+
+	public void concludeGame() {
+		state = GameState.Concluded;
+	}
+
+	public void endGame() {
+		state = GameState.Waiting;
+		for (PlayerRef playerRef : players) {
+			// Reset player role to unassigned (and reset models and items)
+			resetPlayer(playerRef);
+
+			// Get reference
+			Ref<EntityStore> ref = playerRef.getReference();
+			if (ref == null || !ref.isValid()) continue;
+
+			// Teleport player
+			Vector3d transform = new Vector3d(LOBBY_SPAWN_POS[0], LOBBY_SPAWN_POS[1], LOBBY_SPAWN_POS[2]);
+			Vector3f rot =  new Vector3f(0, 0, 0);
+			Teleport teleport = Teleport.createForPlayer(transform, rot);
+			ref.getStore().addComponent(ref, Teleport.getComponentType(), teleport);
 		}
 	}
 
@@ -198,15 +232,27 @@ public class GameManager {
 		assert ref != null && ref.isValid();
 		Store<EntityStore> store = ref.getStore();
 
-		pc.setRole(PlayerRole.Unassigned);
-
-		PlayerSkinComponent skinComponent = store.getComponent(ref, PlayerSkinComponent.getComponentType());
-		if (skinComponent != null) {
-			PlayerSkinComponent playerSkinComponent = store.ensureAndGetComponent(ref, PlayerSkinComponent.getComponentType());
-			Model newModel = CosmeticsModule.get().createModel(playerSkinComponent.getPlayerSkin());
-			store.putComponent(ref, ModelComponent.getComponentType(), new ModelComponent(newModel));
-			playerSkinComponent.setNetworkOutdated();
+		// reset player model if player was boss
+		if (pc.getRole() == PlayerRole.Boss) {
+			PlayerSkinComponent skinComponent = store.getComponent(ref, PlayerSkinComponent.getComponentType());
+			if (skinComponent != null) {
+				PlayerSkinComponent playerSkinComponent = store.ensureAndGetComponent(ref, PlayerSkinComponent.getComponentType());
+				Model newModel = CosmeticsModule.get().createModel(playerSkinComponent.getPlayerSkin());
+				store.putComponent(ref, ModelComponent.getComponentType(), new ModelComponent(newModel));
+				playerSkinComponent.setNetworkOutdated();
+			}
 		}
+
+		pc.setRole(PlayerRole.Unassigned);
+		if (pc.isReady()) pc.toggleReady();
+
+		// Reset inventory to spawn inventory (settings cog)
+		Player player = ref.getStore().getComponent(ref, Player.getComponentType());
+		if (player == null) return;
+		Inventory inventory = player.getInventory();
+		inventory.clear();
+		ItemStack settingsItem = new ItemStack("settings");
+		inventory.getHotbar().setItemStackForSlot((short) 8, settingsItem);
 	}
 
 	@Nullable

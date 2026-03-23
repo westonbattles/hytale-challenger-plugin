@@ -55,12 +55,16 @@ public class ChallengerPlugin extends JavaPlugin {
         //Commands
         this.getCommandRegistry().registerCommand(new BossUIShowCommand("showbossui", "shows the boss ui"));
         this.getCommandRegistry().registerCommand(new BossUIHideCommand("hidebossui", "hides the boss ui"));
+        this.getCommandRegistry().registerCommand(new NotificationCommand("notification", ""));
+
         this.getCommandRegistry().registerCommand(new ListPlayersCommand("listplayers", "Prints the contents of GameManager.players"));
         this.getCommandRegistry().registerCommand(new ReadyCommand("ready", "toggle ready"));
         this.getCommandRegistry().registerCommand(new MakeBossCommand("makeboss", ""));
         this.getCommandRegistry().registerCommand(new ResetPlayerCommand("resetplayer", ""));
-        this.getCommandRegistry().registerCommand(new NotificationCommand("notification", ""));
         this.getCommandRegistry().registerCommand(new SpawnDummiesCommand("spawndummies", ""));
+        this.getCommandRegistry().registerCommand(new ReadyDummiesCommand("readydummies", ""));
+        this.getCommandRegistry().registerCommand(new EndGameCommand("endgame", ""));
+
         //Components
         this.playerComponent = entityStoreRegistry.registerComponent(PlayerComponent.class, PlayerComponent::new);
         //Systems
