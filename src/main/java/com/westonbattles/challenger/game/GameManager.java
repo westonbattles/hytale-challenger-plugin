@@ -179,7 +179,7 @@ public class GameManager {
 				makeBoss(players.get(i));
 
 				// Teleport boss to center of arena
-				Vector3f rot =  new Vector3f(0, 0, 0);
+				Vector3f rot =  new Vector3f(0, (float) -Math.PI/2, 0);
 				Teleport teleport = Teleport.createForPlayer(arenaCenter, rot);
 				ref.getStore().addComponent(ref, Teleport.getComponentType(), teleport);
 			}
@@ -192,9 +192,11 @@ public class GameManager {
 						0.0,
 						distanceFromBoss * Math.sin(angleDifference * spawnIndex)
 				);
-				spawnPosition.add(arenaCenter); // Translate spawn positions to be around the boss
 
-				Vector3f rot =  new Vector3f(0, 0, 0); // prob not hard to figure out
+
+				Vector3f rot =  new Vector3f(0, (float) (Math.PI -Math.atan2(spawnPosition.x, -spawnPosition.z)), 0); // thank you desmos
+
+				spawnPosition.add(arenaCenter); // Translate spawn positions to be around the boss
 				Teleport teleport = Teleport.createForPlayer(spawnPosition, rot);
 				ref.getStore().addComponent(ref, Teleport.getComponentType(), teleport);
 
