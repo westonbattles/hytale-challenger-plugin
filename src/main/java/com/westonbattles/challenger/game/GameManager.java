@@ -29,6 +29,7 @@ import com.westonbattles.challenger.ui.BossSelectUI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.foreign.Arena;
 import java.net.spi.InetAddressResolver;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,6 +159,12 @@ public class GameManager {
 		state = GameState.Active;
 		ChallengerPlugin.LOGGER.atInfo().log("STARTING GAME");
 
+		Vector3d arenaCenter = new Vector3d(ARENA_CENTER_POS[0], ARENA_CENTER_POS[1], ARENA_CENTER_POS[2]);
+
+		int distanceFromBoss = 7;
+		int spawnIndex = 0;
+		double angleDifference = (2*Math.PI) / (players.size()-1);
+
 		for (int i = 0; i < players.size(); i++) {
 
 			// Clear inventory
@@ -168,8 +175,33 @@ public class GameManager {
 			Inventory inventory = player.getInventory();
 			inventory.clear();
 
-			if (i == bossIndex) makeBoss(players.get(i));
-			else makeChallenger(players.get(i));
+			if (i == bossIndex) {
+				makeBoss(players.get(i));
+
+				// Teleport boss to center of arena
+				Vector3f rot =  new Vector3f(0, 0, 0);
+				Teleport teleport = Teleport.createForPlayer(arenaCenter, rot);
+				ref.getStore().addComponent(ref, Teleport.getComponentType(), teleport);
+			}
+			else {
+				makeChallenger(players.get(i));
+
+				// Teleport players in a ring around the boss
+				Vector3d spawnPosition = new Vector3d(
+						distanceFromBoss * Math.cos(angleDifference * spawnIndex),
+						0.0,
+						distanceFromBoss * Math.sin(angleDifference * spawnIndex)
+				);
+				spawnPosition.add(arenaCenter); // Translate spawn positions to be around the boss
+
+				Vector3f rot =  new Vector3f(0, 0, 0); // prob not hard to figure out
+				Teleport teleport = Teleport.createForPlayer(spawnPosition, rot);
+				ref.getStore().addComponent(ref, Teleport.getComponentType(), teleport);
+
+
+				// Update index
+				spawnIndex += 1;
+			}
 		}
 	}
 
