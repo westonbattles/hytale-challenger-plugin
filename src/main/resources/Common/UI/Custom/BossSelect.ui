@@ -49,27 +49,29 @@ $Container = "Common/Container.ui";
   FocusOutlineColor: #ffffff(0.4)
 );
 
-TabNavigation #MainTabs {
-  Anchor: (Height: 62 + 4, Top: 293, Left: 525+174, Right: 0);
-  Style: $Container.@IconOnlyTopTabsStyle;
-  SelectedTab: "Home";
+Group {
+  Anchor: (Width: 525, Height: 426);
 
+  TabNavigation #MainTabs {
+    Anchor: (Height: 62 + 4, Top: 0, Left: 0);
+    Style: $Container.@IconOnlyTopTabsStyle;
+    SelectedTab: "Home";
 
-  TabButton #Home {
-    Id: "Home";
-    Icon: "Common/Icons/IconGeneralHome.png";
-    IconSelected: "Common/Icons/IconGeneralHomeActivated.png";
+    TabButton #Home {
+      Id: "Home";
+      Icon: "Common/Icons/IconGeneralHome.png";
+      IconSelected: "Common/Icons/IconGeneralHomeActivated.png";
+    }
+
+    TabButton #Settings {
+      Id: "Settings";
+      Icon: "Common/Icons/IconGeneralSettings.png";
+      IconSelected: "Common/Icons/IconGeneralSettingsActivated.png";
+    }
   }
 
-  TabButton #Settings {
-    Id: "Settings";
-    Icon: "Common/Icons/IconGeneralSettings.png";
-    IconSelected: "Common/Icons/IconGeneralSettingsActivated.png";
-  }
-}
-
-$Container.@DecoratedContainer {
-  Anchor: (Width: 525, Height: 360);
+  $Container.@DecoratedContainer {
+    Anchor: (Width: 525, Height: 360, Top: 66);
 
   $Container.@Title #PageTitle {
     Anchor: (Top: -316, Left: 0);
@@ -130,6 +132,7 @@ $Container.@DecoratedContainer {
         )
       );
     }
+  }
   }
 }
 
